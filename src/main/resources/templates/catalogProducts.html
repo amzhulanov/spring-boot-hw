@@ -27,14 +27,13 @@
     <table class="table table-hover" th:if="${products.size() > 0}">
         <thead>
         <tr>
-            <td>id</td>
             <td>title</td>
             <td>price</td>
         </tr>
         </thead>
         <tbody>
         <tr th:each="p : ${products}">
-            <td th:text="${p.id}"/>
+            <td th:text="${p.id}" hidden/>
             <td th:text="${p.title}"/>
             <td th:text="${p.cost}"/>
         </tr>
@@ -43,6 +42,26 @@
     <br>
     <span th:text="'Total products count (filtered): ' + ${productsCount}"/>
     <a th:href="@{/}">на Главную страницу</a>
+    <br>
+    <span th:text="${currentPage}"  th:name="currentPage"/>from
+    <span th:text="${totalPage}" th:name="totalPage"/>
+    <br>
+
+    <form th:action="@{/products/prev_page(currentPage=${currentPage},
+                                            minPrice=${minPrice},
+                                            maxPrice=${maxPrice},
+                                            word=${word})}" th:method="POST">
+        <input type="submit"  value="Prev page"/>
+    </form>
+
+    <form th:action="@{/products/next_page(currentPage=${currentPage},
+                                            totalPage=${totalPage},
+                                            minPrice=${minPrice},
+                                            maxPrice=${maxPrice},
+                                            word=${word}
+                                            )}" th:method="POST">
+        <input type="submit"  value="Next page" />
+    </form>
 </div>
 </body>
 </html>

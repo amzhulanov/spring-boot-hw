@@ -5,5 +5,6 @@ import org.springframework.data.domain.Page;
 
 public interface ProductService  {
     Page<Product> findAll(Float minPrice, Float maxPrice, String word);
+    Page<Product> findAll(Float minPrice, Float maxPrice, String word,Integer currentPage);
 
 }

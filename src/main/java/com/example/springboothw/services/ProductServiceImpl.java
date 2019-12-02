@@ -37,4 +37,22 @@ public class ProductServiceImpl implements ProductService {
         return page;
     }
 
+    @Override
+    public Page<Product> findAll(Float minPrice, Float maxPrice, String word, Integer currentPage) {
+
+        Specification<Product> spec = Specification.where(null);
+        if (minPrice != null) {
+            spec = spec.and(ProductSpecifications.priceGreaterThanOrEq(minPrice));
+        }
+        if (maxPrice != null) {
+            spec = spec.and(ProductSpecifications.priceLesserThanOrEq(maxPrice));
+        }
+        if (word != null) {
+            spec = spec.and(ProductSpecifications.titleContains(word));
+        }
+        Page<Product> page = productRepository.findAll(spec, PageRequest.of(currentPage, 5, Sort.Direction.ASC, "cost"));
+
+        return page;
+    }
+
 }
