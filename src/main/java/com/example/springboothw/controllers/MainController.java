@@ -26,34 +26,7 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/products")
-    @ResponseBody
-    public List<Product> getAllItems() {
-        return productService.findAll();
-    }
 
-    @GetMapping("/filteringAndPaging")
-    public String pagingExample(Model model,
-                                @RequestParam(required = false, name = "min_cost") Float minPrice,
-                                @RequestParam(required = false, name = "max_cost") Float maxPrice,
-                                @RequestParam(required = false, name = "word") String word
-    ) {
-        Specification<Product> spec = Specification.where(null);
-        if (minPrice != null) {
-            spec = spec.and(ProductSpecifications.priceGreaterThanOrEq(minPrice));
-        }
-        if (maxPrice != null) {
-            spec = spec.and(ProductSpecifications.priceLesserThanOrEq(maxPrice));
-        }
-        if (word != null) {
-            spec = spec.and(ProductSpecifications.titleContains(word));
-        }
-       // Page<Product> page = productRepository.findAll(spec, PageRequest.of(0, 5, Sort.Direction.ASC, "cost"));
-        Page<Product> page= productService.findAll(spec, PageRequest.of(0, 5, Sort.Direction.ASC, "cost"));
-        model.addAttribute("products", page.getContent());
-        model.addAttribute("productsCount", page.getTotalElements());
-        return "catalogProducts";
-    }
 
 
 }
