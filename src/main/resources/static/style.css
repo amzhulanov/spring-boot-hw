@@ -1,0 +1,51 @@
+
+.container_main{
+max-width: 1366px;
+    margin: 0 auto;
+    display: flex;
+  flex-direction: column;
+  min-height: 100%;    
+}
+.header{
+    background-color: azure
+}
+.body{
+    display: flex;
+  flex-direction: row;
+     height: 800px;
+}
+
+
+.filter{
+    
+}
+
+.input-group{
+        display: flex;
+  flex-direction: column;
+    width: 200px;
+}
+.form-control{
+    min-width: 100%;
+}
+
+.products{
+   width: 1166px;
+    padding-left: 10px;
+}
+
+.button{
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 45px;
+    line-height: 35px;
+    box-shadow: 0 2px 5px 1px rgba(33, 33, 33, 0.35);
+    border-radius: 23px;
+    background-color: #ffffff;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #212121;
+    letter-spacing: 3.6px;
+}

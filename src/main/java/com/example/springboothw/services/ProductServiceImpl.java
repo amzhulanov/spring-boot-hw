@@ -2,13 +2,16 @@ package com.example.springboothw.services;
 
 import com.example.springboothw.entities.Product;
 import com.example.springboothw.repositories.ProductRepository;
-import com.example.springboothw.repositories.ProductSpecifications;
+import com.example.springboothw.utils.spec.ProductSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -54,5 +57,20 @@ public class ProductServiceImpl implements ProductService {
 
         return page;
     }
+
+
+
+    @Override
+    public List<String> findAllCategories() {
+        return productRepository.findAllCategories();
+    }
+
+
+    @Override
+    public Page<Product> findAll(Specification<Product> spec, Pageable pageable) {
+        return productRepository.findAll(spec,pageable);
+    }
+
+
 
 }
