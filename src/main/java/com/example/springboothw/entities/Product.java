@@ -16,8 +16,9 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @Column(name = "category_fld")
-    private String category;
+    @ManyToOne //много поле в таблице продукты соответствуют одной категории в Categories
+    @JoinColumn(name="category_id")
+    private Category category;
 
     @Column(name = "description_fld")
     private String description;

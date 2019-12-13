@@ -1,7 +1,8 @@
-package com.example.springboothw.services;
+package com.example.springboothw.services.impl;
 
 import com.example.springboothw.entities.Product;
 import com.example.springboothw.repositories.ProductRepository;
+import com.example.springboothw.services.ProductService;
 import com.example.springboothw.utils.spec.ProductSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.annotation.PostConstruct;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -20,6 +22,11 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
+    }
+
+    @PostConstruct
+    private void init(){
+
     }
 
     @Override
@@ -58,19 +65,35 @@ public class ProductServiceImpl implements ProductService {
         return page;
     }
 
-
-
     @Override
-    public List<String> findAllCategories() {
-        return productRepository.findAllCategories();
+    public Product findById(Long id) {
+        return productRepository.findById(id).get();
     }
 
+    @Override
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
+
+//    @Override
+//    public Product add(Product product) {
+//        return productRepository.addProduct(product);
+//    }
+
+    @Override
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
+    }
 
     @Override
     public Page<Product> findAll(Specification<Product> spec, Pageable pageable) {
         return productRepository.findAll(spec,pageable);
     }
 
+    @Override
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
 
 
 }

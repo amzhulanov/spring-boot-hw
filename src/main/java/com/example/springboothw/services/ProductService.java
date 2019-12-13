@@ -11,5 +11,10 @@ public interface ProductService  {
     Page<Product> findAll(Float minPrice, Float maxPrice, String word);
     Page<Product> findAll(Float minPrice, Float maxPrice, String word,Integer currentPage);
     Page<Product> findAll(Specification<Product> spec, Pageable pageable);
-    List<String> findAllCategories();
+    List<Product> findAll();
+
+    Product findById(Long id);
+    Product save(Product product);
+   // Product add(Product product);
+    void deleteById(Long id);
 }

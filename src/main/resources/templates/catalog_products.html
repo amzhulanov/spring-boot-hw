@@ -7,11 +7,10 @@
 
     <title>Spring Data Demo</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link href="http://demos.creative-tim.com/fresh-bootstrap-table/assets/css/fresh-bootstrap-table.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://demos.creative-tim.com/fresh-bootstrap-table/assets/js/bootstrap-table.js"></script>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" th:href="@{../css/style.css}" />
+    <script th:src="@{../js/main.js}"></script>
 </head>
 
 <body>
@@ -32,18 +31,20 @@
             <input class="form-control" th:value="${param.maxPrice}" name="maxPrice"
                    type="number"
                    placeholder="Максимальная цена"/>
-
-            <select name="category">
+            <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<com.example.springboothw.entities.Product>"*/-->
+            <!--/*@thymesVar id="p" type="com.example.springboothw.entities.Product"*/-->
+            <select name="cat_id">
+                <option th:text="'Не выбрана'" th:value="null"/>
                 <option th:each="category : ${categories}"
-                        th:value="${category}"
-                        th:text="${category}"
-                        th:selected="${param.category}==${category}">
+                        th:text="${category.title}" th:selected="${param.cat_id!=null && param.cat_id.toString()==category.id.toString()}"
+                        th:value="${category.id}"
+                        >
                 </option>
-
-
             </select>
 
+
             <input class="button" type="submit" value="Применить фильтр"/>
+
         </div>
     </form>
 
@@ -62,9 +63,11 @@
         </thead>
         <tbody>
         <tr th:each="p : ${page.content}">
-            <th scope="row" th:text="${p.id}"></th>
+            <th scope="row" th:value="${p.id}"></th>
 
-            <td th:text="${p.category}"/>
+            <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<com.example.springboothw.entities.Product>"*/-->
+            <!--/*@thymesVar id="p" type="com.example.springboothw.entities.Product"*/-->
+            <td th:text="${p.category.title}"/>
             <td>
                 <span style="font-weight: bold" th:text="${p.title}"/>
                 <br>
@@ -73,12 +76,22 @@
             </td>
             <td th:text="${p.cost}"/>
             <td>
-                <input class="button" type="submit" value="Редактировать"    />
-                <input class="button" type="submit" value="Удалить"    />
+
+                <a th:href="@{'/products/edit/' + ${p.id}}" class="button">Редактировать</a>
+                <button class="button btnPost" th:name="'button'+${p.id}"  th:value="${p.id}">В корзину</button>
+
+
+                  <!--<a th:href="@{'/products/add_to_cart/' + ${p.id}}" class="button">В корзину</a>-->
+
             </td>
         </tr>
         </tbody>
     </table>
+       <label id="lblCounter">Товаров в корзине</label>
+       <a th:href="@{'/products/cart/show'}" class="button">Открыть корзину</a>
+<!--<div >
+    <button class="button" id="btnPost">В корзину</button>
+</div>-->
 
 </div>
   </div>
@@ -121,6 +134,7 @@
 
 <div class="footer">
     <a th:href="@{/}">на Главную страницу</a>
+
 </div>
 </div>
 </body>
