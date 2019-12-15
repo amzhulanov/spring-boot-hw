@@ -29,4 +29,5 @@ public class Product {
     @Column(name = "cost_fld")
     private float cost;
 
+
 }
