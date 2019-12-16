@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Cart</title>
+    </head>
+    <body>
+        <!--/*@thymesVar id="product" type="com.geekbrains.entities.Product"*/-->
+
+      <div class="cart">
+          <table class="table table-striped">
+              <thead>
+              <tr>
+                  <th scope="col">id</th>
+                  <th scope="col">Категория</th>
+                  <th scope="col">Описание</th>
+                  <th scope="col">Цена</th>
+                  <th/>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="p : ${products}">
+                  <th scope="row" th:value="${p.id}"></th>
+
+                  <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<com.example.springboothw.entities.Product>"*/-->
+                  <!--/*@thymesVar id="p" type="com.example.springboothw.entities.Product"*/-->
+                  <td th:text="${p.category.title}"/>
+                  <td>
+                      <span style="font-weight: bold" th:text="${p.title}"/>
+                      <br>
+                      <span th:text="${p.description}"/>
+
+                  </td>
+                  <td th:text="${p.cost}"/>
+                  <td>
+
+                      <a th:href="@{'/products/cart/del/' + ${p.id}}" class="button">Убрать из корзины</a>
+
+                  </td>
+              </tr>
+              </tbody>
+          </table>
+
+      </div>
+        <a th:href="@{/}">на Главную страницу</a>
+        <a th:href="@{/products/show}">в каталог</a>
+    </body>
+</html>
