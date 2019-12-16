@@ -24,6 +24,10 @@ INSERT INTO products (title_fld, category_fld,description_fld, cost_fld) VALUES
 ('pasta','spaghetti','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 77.2),
 ('orange juce','drinks','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 837.2),
 ('burgers','fastfood','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black',  72.2);
+COMMIT;
+
+BEGIN;
+set search_path to bootdata;
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
@@ -60,7 +64,7 @@ VALUES
 
 INSERT INTO users (phone, password, first_name, last_name, email)
 VALUES
-('11111111','$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i','Admin','Admin','admin@gmail.com');
+('1111','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Admin','Admin','admin@gmail.com');
 
 INSERT INTO users_roles (user_id, role_id)
 VALUES

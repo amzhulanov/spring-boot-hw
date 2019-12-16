@@ -3,8 +3,10 @@ package com.example.springboothw.controllers;
 import com.example.springboothw.entities.Cart;
 import com.example.springboothw.entities.Category;
 import com.example.springboothw.entities.Product;
+import com.example.springboothw.entities.User;
 import com.example.springboothw.services.CategoryService;
 import com.example.springboothw.services.ProductService;
+import com.example.springboothw.services.UserService;
 import com.example.springboothw.utils.ProductFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +28,32 @@ import java.util.Map;
 public class ProductController {
     private CategoryService categoryService;
     private ProductService productService;
+    private UserService userService;
     private Cart cart;
 
     @Autowired
-    public ProductController(CategoryService categoryService, ProductService productService, Cart cart){
+    public ProductController(CategoryService categoryService, ProductService productService, Cart cart,UserService userService){
         this.productService=productService;
         this.categoryService=categoryService;
+        this.userService = userService;
         this.cart=cart;
     }
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login_page";
+    }
 
+    @GetMapping("/profile")
+    public String profilePage(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/";
+        }
+        User user = userService.findByPhone(principal.getName());
+        System.out.println("телефон - "+user.getPhone()+" : пароль - "+user.getPassword());
+        model.addAttribute("user", user);
+        System.out.println("возвращаю данные юзера в профиль");
+        return "profile";
+    }
 
     @GetMapping("/")
     public String index() {
