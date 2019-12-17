@@ -33,11 +33,6 @@ public class ProductController {
         this.cart = cart;
     }
 
-    @GetMapping("/")
-    public String index() {
-        return "";
-    }
-
     // http://localhost:8189/app/products/show
     @GetMapping(path = "/show")
     public String showAllProducts(Model model, @RequestParam Map<String, String> params) {

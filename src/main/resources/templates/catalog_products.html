@@ -103,7 +103,7 @@
             <li class="page-item">
                 <a class="page-link"
                    th:style="${page.getNumber()}== 0 ? 'pointer-events: none;':'pointer-events: auto;'"
-                   th:href="@{'/products/show/?p=' + ${page.getPageable().getPageNumber()} + ${filtersDef}}"
+                   th:href="@{'/products/show?p=' + ${page.getPageable().getPageNumber()} + ${filtersDef}}"
                    aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -120,7 +120,7 @@
             <li class="page-item">
                 <a class="page-link"
                    th:style="${page.getNumber()}==${page.getTotalPages()-1} ? 'pointer-events: none;':'pointer-events: auto;'"
-                   th:href="@{'/products/show/?p=' + ${page.getPageable().getPageNumber()+2} + ${filtersDef}}"
+                   th:href="@{'/products/show?p=' + ${page.getPageable().getPageNumber()+2} + ${filtersDef}}"
                    aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
