@@ -1,35 +1,41 @@
 BEGIN;
 set search_path to bootdata;
+
+drop table if exists categories cascade;
+create table categories (category_id bigserial, title_fld varchar(255), primary key(category_id));
+insert into categories
+(title_fld) values
+('drinks'), ('fastfood'),('dessert'),('fruits');
+
 DROP TABLE IF EXISTS products CASCADE;
+CREATE TABLE products (product_id bigserial PRIMARY KEY, category_id bigint,description_fld VARCHAR(512), title_fld VARCHAR(255), cost_fld float, constraint fk_cat_id foreign key (category_id) references categories (category_id));
+INSERT INTO products (title_fld, category_id,description_fld, cost_fld) VALUES
+('milk',1,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 10.5),
+('sausage',2,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 37.2),
+('curd',1,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 371.2),
+('sour cream',1,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 372.2),
+('carrots',4,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 378.2),
+('limone',4,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 337.2),
+('pizza',2,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 327.2),
+('cofe',1,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 37.2),
+('cake',3,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 374.2),
+('toast',2,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 357.2),
+('mango',4,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 367.2),
+('bread',3,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 387.2),
+('biscuits',3,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 397.2),
+('popcorn', 2,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 317.2),
+('water',1,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 27.2),
+('coke',1,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 47.2),
+('potatoes',4,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 57.2),
+('pasta',2,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 77.2),
+('orange juce',1,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 837.2),
+('burgers',2,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black',  72.2);
 
-CREATE TABLE products (product_id bigserial PRIMARY KEY, category_fld VARCHAR(255),description_fld VARCHAR(512), title_fld VARCHAR(255), cost_fld float);
-INSERT INTO products (title_fld, category_fld,description_fld, cost_fld) VALUES
-('milk','dairt','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 10.5),
-('sausage','meat','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 37.2),
-('curd','dairt','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 371.2),
-('sour cream','dairt','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 372.2),
-('carrots','vegetables','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 378.2),
-('limone','fruits','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 337.2),
-('pizza','fastfood','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 327.2),
-('cofe','drinks','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 37.2),
-('cake','dessert','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 374.2),
-('toast','fastfood','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 357.2),
-('mango','fruits','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 367.2),
-('bread','dessert','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 387.2),
-('biscuits','dessert','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 397.2),
-('popcorn', 'fastfood','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 317.2),
-('water','drinks','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 27.2),
-('coke','drinks','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 47.2),
-('potatoes','vegetables','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 57.2),
-('pasta','spaghetti','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 77.2),
-('orange juce','drinks','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 837.2),
-('burgers','fastfood','Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black',  72.2);
-COMMIT;
 
-BEGIN;
-set search_path to bootdata;
 
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users cascade;
+DROP TABLE IF EXISTS roles cascade;
+DROP TABLE IF EXISTS users_roles cascade;
 CREATE TABLE users (
                        id                    bigserial,
                        phone                 VARCHAR(30) NOT NULL UNIQUE,
@@ -40,14 +46,12 @@ CREATE TABLE users (
                        PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS roles;
 CREATE TABLE roles (
                        id                    serial,
                        name                  VARCHAR(50) NOT NULL,
                        PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS users_roles;
 CREATE TABLE users_roles (
                              user_id               INT NOT NULL,
                              role_id               INT NOT NULL,

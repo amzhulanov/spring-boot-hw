@@ -4,7 +4,6 @@ import com.example.springboothw.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.access.annotation.Secured;
 
 import java.util.List;
 
@@ -16,12 +15,12 @@ public interface ProductService  {
 
     Product findById(Long id);
 
-    @Secured(value="ROLE_ADMIN")
+    //@Secured(value="ROLE_ADMIN")
     Product save(Product product);
 
-    @Secured(value="ROLE_ADMIN")
+    //@Secured(value="ROLE_ADMIN")
     Product update(Product product);
 
-    @Secured(value="ROLE_ADMIN")
+    //@Secured(value="ROLE_ADMIN")
     void deleteById(Long id);
 }
