@@ -107,6 +107,7 @@ public class ProductController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public String cartAdd(@RequestParam Long index) {
+        System.out.println("Начат процесс добавления в корзину");
         cart.addProductToCart(index);
         System.out.println("товар добавлен id="+cart.countProdCart());
         return "success";
