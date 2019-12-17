@@ -31,7 +31,7 @@ public class ProductController {
     private UserService userService;
     private Cart cart;
 
-    @Autowired
+
     public ProductController(CategoryService categoryService, ProductService productService, Cart cart,UserService userService){
         this.productService=productService;
         this.categoryService=categoryService;
@@ -103,17 +103,20 @@ public class ProductController {
         return "cart";
     }
 
-    @PostMapping("/cart/add")
-    @ResponseBody
-    @ResponseStatus(value = HttpStatus.OK)
-    public String cartAdd(@RequestParam Long index) {
-        System.out.println("Начат процесс добавления в корзину");
+   //@PostMapping("/cart/add")
+    //    public String cartAdd(@RequestParam Long index) {
+
+        @GetMapping(path="/cart/add/{index}")
+        @ResponseBody
+        @ResponseStatus(value = HttpStatus.OK)
+         public String cartAdd(@PathVariable Long index){
         cart.addProductToCart(index);
-        System.out.println("товар добавлен id="+cart.countProdCart());
+        System.out.println("в корзине лежит товаров ="+cart.countProdCart());
         return "success";
     }
 
-    @PostMapping("/cart/countRequest")
+    //@PostMapping("/cart/countRequest")
+    @GetMapping(path="/cart/countRequest")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public Integer getCartCount() {

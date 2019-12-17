@@ -2,8 +2,6 @@ package com.example.springboothw.entities;
 
 import com.example.springboothw.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

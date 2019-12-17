@@ -15,12 +15,11 @@ public interface ProductService  {
 
     Product findById(Long id);
 
-    //@Secured(value="ROLE_ADMIN")
+
     Product save(Product product);
 
-    //@Secured(value="ROLE_ADMIN")
+
     Product update(Product product);
 
-    //@Secured(value="ROLE_ADMIN")
     void deleteById(Long id);
 }

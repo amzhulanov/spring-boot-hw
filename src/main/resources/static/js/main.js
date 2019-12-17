@@ -2,18 +2,16 @@ $(document).ready(function () {
     $(".btnPost").click(function (e) {
         e.preventDefault();
         console.log(123);
-        var button_value=$(this).val()
+        var button_value=$(this).val();
+        console.log($(this).val());
         $.ajax({
-            type: "POST",
-            url: "/app/products/cart/add",
-            data: {
-                index: button_value
+            type: "GET",
+            url: "/app/products/cart/add/"+button_value,
 
-            },
             success: function (result) {
-
                 updateCounter();
             },
+
             error: function (msg) {
                 alert("Oops");
             }
@@ -21,11 +19,12 @@ $(document).ready(function () {
     });
 
     function updateCounter() {
+        
         $.ajax({
-            type: "POST",
+
+            type: "GET",
             url: "/app/products/cart/countRequest",
             success: function (result) {
-                alert("запуск функции updateCounter");
                 console.log(result);
                 $('#lblCounter').text('Товаров в корзине: ' + result);
             }
