@@ -68,12 +68,16 @@ VALUES
 
 INSERT INTO users (phone, password, first_name, last_name, email)
 VALUES
-('1111','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Admin','Admin','admin@gmail.com');
+('1111','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Admin','Admin','admin@gmail.com'),
+('manager1','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Manager1','Manager1','manager1@gmail.com'),
+('user1','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','user1','user1','user1@gmail.com');
 
 INSERT INTO users_roles (user_id, role_id)
 VALUES
 (1, 1),
 (1, 2),
-(1, 3);
+(1, 3),
+(2, 2),
+(3, 1);
 
 COMMIT;

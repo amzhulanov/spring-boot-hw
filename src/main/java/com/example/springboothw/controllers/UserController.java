@@ -8,22 +8,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
     private UserService userService;
-
 
     public UserController(UserService userService){
         this.userService = userService;
     }
-    @GetMapping("/login")
+    @GetMapping("/user/login")
     public String loginPage() {
         return "login_page";
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/user/profile")
     public String profilePage(Model model, Principal principal) {
         if (principal == null) {
             return "redirect:/";
@@ -33,5 +32,12 @@ public class UserController {
         model.addAttribute("user", user);
         System.out.println("возвращаю данные юзера в профиль");
         return "profile";
+    }
+
+    @GetMapping("/admin/users")
+    public String getAllUser(Model model){
+        List<User> users= (List<User>) userService.findAll();
+        model.addAttribute("users",users);
+        return "user_list";
     }
 }

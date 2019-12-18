@@ -26,6 +26,10 @@
                     <a class="nav-link" th:href="@{/products/cart/show}">Корзина</a>
                 </li>
 
+                <li sec:authorize="hasAnyRole('ADMIN')" class="nav-item" th:classappend="${activeTab == 'Users_list' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/admin/users}">Список пользователей</a>
+                </li>
+
                 <li sec:authorize="isAuthenticated()" class="nav-item">
                     <form th:action="@{/logout}" method="POST">
                         <button id="navLogout" class="btn btn-outline-secondary" type="submit">Выход</button>
