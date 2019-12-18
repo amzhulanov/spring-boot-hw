@@ -1,4 +1,3 @@
-BEGIN;
 set search_path to bootdata;
 
 drop table if exists categories cascade;
@@ -86,4 +85,3 @@ create table orders (order_id bigserial, user_id bigint, cost_fld numeric(8, 2),
 drop table if exists orders_items cascade;
 create table orders_items (orders_items_id bigserial, order_id bigint, product_id bigint, quantity_fld int, cost_fld numeric(8, 2), primary key(orders_items_id), constraint fk_prod_id foreign key (product_id) references products (product_id), constraint fk_order_id foreign key (order_id) references orders (order_id));
 
-COMMIT;
