@@ -21,30 +21,32 @@ import java.util.List;
 public class Cart {
 
     private BigDecimal cost;
- //   private ProductService productService;
+    //   private ProductService productService;
     private List<OrderItem> items;
 
     @PostConstruct
-    public void init(){items=new ArrayList<>();}
+    public void init() {
+        items = new ArrayList<>();
+    }
 
     public void clear() {
         items.clear();
         recalculate();
     }
 
-public void add(Product product) {
-    for (OrderItem i : items) {
-        if (i.getProduct().getId().equals(product.getId())) {
-            i.setQuantity(i.getQuantity() + 1);
-            i.setCost(new BigDecimal(i.getQuantity() * i.getProduct().getCost().doubleValue()));
-            recalculate();
+    public void add(Product product) {
+        for (OrderItem i : items) {
+            if (i.getProduct().getId().equals(product.getId())) {
+                i.setQuantity(i.getQuantity() + 1);
+                i.setCost(new BigDecimal(i.getQuantity() * i.getProduct().getCost().doubleValue()));
+                recalculate();
 
-            return;
+                return;
+            }
         }
+        items.add(new OrderItem(product));
+        recalculate();
     }
-    items.add(new OrderItem(product));
-    recalculate();
-}
 
     public void removeById(Long productId) {
         for (int i = 0; i < items.size(); i++) {
@@ -56,7 +58,7 @@ public void add(Product product) {
         }
     }
 
-    public Integer countProdCart(){
+    public Integer countProdCart() {
         return items.size();
     }
 
