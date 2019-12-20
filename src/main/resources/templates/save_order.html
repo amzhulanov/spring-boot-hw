@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Подтверждение заказа</title>
+    <link rel="stylesheet" th:href="@{../static/css/stylesheet.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <div th:replace="~{navigation :: navigation(Cart)}"/>
+    <div class="save_cart">
+        <div class="title_h1"><span><h1>Информация о заказе</h1></span></div>
+
+        <div th:if="${cart.items.size() > 0}">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Название товара</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${cart.items}">
+                    <td th:text="${item.product.title}"/>
+                    <td th:text="${item.quantity}"/>
+                    <td th:text="${item.cost}"/>
+
+                </tr>
+                </tbody>
+            </table>
+            <span th:text="'Общая стоимость: ' + ${cart.cost}"/>
+        </div>
+        <div th:if="${cart.items.size() == 0}">
+            <span text="Ваша корзина пуста"/>
+        </div>
+    </div>
+    <div class="delivery">
+        <div class="title_h1"><span><h1> Адрес доставки </h1></span></div>
+        <p></p>
+        <div class="form">
+            <form th:action="@{/products/orders/commit}" method="GET">
+                <label><span>Получатель:</span><br/></label>
+                    <span name="user" th:text="${firstname} +' '+${lastname}+', '+${phone}">Телефон:</span></br>
+
+                <label><span class="address email"> E-mail:</span><br/>
+                    <input type="email" class="guest" name="email" required/></label>
+                <p></p>
+                <label><span class="address city">Город:</span><br/>
+                    <input type="text" class="guest" name="city" required/>  </label>
+                <p></p>
+                <label><span class="address city">Улица:</span><br/>
+                    <input type="text" class="guest" name="street" required/></label>
+                <p></p>
+                <label><span class="address city">Номер дома:</span><br/>
+                    <input type="text" class="guest" name="house" required/></label>
+                <p></p>
+                <button type="submit" class="btn btn-warning">Подтвердить заказ</button>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

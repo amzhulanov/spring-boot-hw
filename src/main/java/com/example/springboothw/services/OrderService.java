@@ -15,7 +15,7 @@ public class OrderService {
     }
 
     public Order save(Order order) {
-        System.out.println("order save = "+order);
+        System.out.println("order save = "+order.toString());
         return orderRepository.save(order);
     }
 }

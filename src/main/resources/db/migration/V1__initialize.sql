@@ -1,12 +1,20 @@
 set search_path to bootdata;
 
+drop table if exists orders cascade;
+drop table if exists orders_items cascade;
+drop table if exists address cascade;
 drop table if exists categories cascade;
+DROP TABLE IF EXISTS products CASCADE;
+DROP TABLE IF EXISTS users cascade;
+DROP TABLE IF EXISTS roles cascade;
+DROP TABLE IF EXISTS users_roles cascade;
+
 create table categories (category_id bigserial, title_fld varchar(255), primary key(category_id));
 insert into categories
 (title_fld) values
 ('drinks'), ('fastfood'),('dessert'),('fruits');
 
-DROP TABLE IF EXISTS products CASCADE;
+
 CREATE TABLE products (product_id bigserial PRIMARY KEY, category_id bigint,description_fld VARCHAR(512), title_fld VARCHAR(255), cost_fld numeric(8,2), constraint fk_cat_id foreign key (category_id) references categories (category_id));
 INSERT INTO products (title_fld, category_id,description_fld, cost_fld) VALUES
 ('milk',1,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 10.5),
@@ -32,9 +40,8 @@ INSERT INTO products (title_fld, category_id,description_fld, cost_fld) VALUES
 
 
 
-DROP TABLE IF EXISTS users cascade;
-DROP TABLE IF EXISTS roles cascade;
-DROP TABLE IF EXISTS users_roles cascade;
+
+
 CREATE TABLE users (
                        id                    bigserial,
                        phone                 VARCHAR(30) NOT NULL UNIQUE,
@@ -67,9 +74,9 @@ VALUES
 
 INSERT INTO users (phone, password, first_name, last_name, email)
 VALUES
-('1111','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Admin','Admin','admin@gmail.com'),
-('manager1','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Manager1','Manager1','manager1@gmail.com'),
-('user1','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','user1','user1','user1@gmail.com');
+('111','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Admin','Admin','admin@gmail.com'),
+('222','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Manager1','Manager1','manager1@gmail.com'),
+('333','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','n_user1','f_user1','user1@gmail.com');
 
 INSERT INTO users_roles (user_id, role_id)
 VALUES
@@ -79,9 +86,27 @@ VALUES
 (2, 2),
 (3, 1);
 
-drop table if exists orders cascade;
-create table orders (order_id bigserial, user_id bigint, cost_fld numeric(8, 2), primary key(order_id), constraint fk_user_id foreign key (user_id) references users (id));
+create table address (address_id            bigserial,
+                      city_fld              varchar(100) not null,
+                      street_fld            varchar (100) not null,
+                      num_house_fld         varchar(30) not null,
+                      primary key(address_id));
 
-drop table if exists orders_items cascade;
-create table orders_items (orders_items_id bigserial, order_id bigint, product_id bigint, quantity_fld int, cost_fld numeric(8, 2), primary key(orders_items_id), constraint fk_prod_id foreign key (product_id) references products (product_id), constraint fk_order_id foreign key (order_id) references orders (order_id));
+create table orders (order_id bigserial,
+                    user_id bigint,
+                    cost_fld numeric(8, 2),
+                    address_id bigint,
+                    primary key(order_id),
+                    constraint fk_user_id foreign key (user_id) references users (id),
+                    constraint fk_address_id foreign key (address_id) references address);
+
+
+create table orders_items (orders_items_id bigserial,
+                            order_id bigint,
+                            product_id bigint,
+                            quantity_fld int,
+                            cost_fld numeric(8, 2),
+                            primary key(orders_items_id),
+                            constraint fk_prod_id foreign key (product_id) references products (product_id),
+                            constraint fk_order_id foreign key (order_id) references orders (order_id));
 

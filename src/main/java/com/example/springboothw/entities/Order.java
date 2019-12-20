@@ -25,8 +25,26 @@ public class Order {
     @Column(name = "cost_fld")
     private BigDecimal cost;
 
-    public Order(User user, Cart cart) {
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="address_id")
+    private Address address;
+
+
+
+//    public Order(User user, Cart cart) {
+//        this.user = user;
+//        this.cost = cart.getCost();
+//        this.items = new ArrayList<>();
+//        for (OrderItem i : cart.getItems()) {
+//            i.setOrder(this);
+//            this.items.add(i);
+//        }
+//        cart.clear();
+//    }
+
+    public Order(User user, Cart cart,Address address) {
         this.user = user;
+        this.address=address;
         this.cost = cart.getCost();
         this.items = new ArrayList<>();
         for (OrderItem i : cart.getItems()) {
