@@ -30,4 +30,23 @@ $(document).ready(function () {
             }
         });
     }
+
+    $(".btnReg").click(function (e) {
+        e.preventDefault();
+        console.log(12);
+        var button_value=$(this).val();
+        console.log($(this).val());
+        $.ajax({
+            type: "GET",
+            url: "/user/add/"+button_value,
+
+            success: function (result) {
+                console.log(123);
+            },
+
+            error: function (msg) {
+                alert("Oops");
+            }
+        });
+    });
 });

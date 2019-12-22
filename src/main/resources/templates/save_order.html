@@ -47,7 +47,8 @@
         <div class="form">
             <form th:action="@{/products/orders/commit}" method="GET">
                 <label><span>Получатель:</span><br/></label>
-                    <span name="user" th:text="${firstname} +' '+${lastname}+', '+${phone}">Телефон:</span></br>
+                    <span name="info" th:text="${user.getFirstName()} +' '+${user.getLastName()}+', '+${user.getPhone()}"/></br>
+
 
                 <label><span class="address email"> E-mail:</span><br/>
                     <input type="email" class="guest" name="email" required/></label>

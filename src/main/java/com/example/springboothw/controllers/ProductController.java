@@ -115,9 +115,7 @@ public class ProductController {
     public String createOrder(Principal principal, Model model) {
         User user = userService.findByPhone(principal.getName());
         model.addAttribute(cart);
-        model.addAttribute("phone", user.getPhone());
-        model.addAttribute("firstname", user.getFirstName());
-        model.addAttribute("lastname", user.getLastName());
+        model.addAttribute("user",user);
         return "save_order";
     }
 
@@ -128,6 +126,7 @@ public class ProductController {
         address.setCity(params.get("city"));
         address.setStreet(params.get("street"));
         address.setHouse(params.get("house"));
+
         User user = userService.findByPhone(principal.getName());
         Order order = new Order(user, cart, address);
         orderService.save(order);

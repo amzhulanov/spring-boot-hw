@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script th:src="@{../js/main.js}"></script>
+
+</head>
+<body>
+<div th:replace="~{navigation :: navigation(Home)}"/>
+
+<h1 th:text="#{reg.title}"></h1>
+<table class="table table-striped">
+
+    <tr>
+        <td>
+        <th th:text="#{reg.phone}"></th>
+        </td>
+        <td><input id="reg_phone" name="phone" class="form-control" type="text" th:placeholder="#{reg.phone}"/></td>
+    </tr>
+    <tr>
+        <td>
+
+        <th th:text="#{reg.password}"></th>
+        </td>
+        <td><input id="reg_password" name="password" class="form-control" type="password"
+                   th:placeholder="#{reg.password}"/></td>
+    </tr>
+    <tr>
+        <td>
+        <th th:text="#{reg.password_repeat}"></th>
+        </td>
+        <td><input id="reg_password_repeat" name="password_repeat" class="form-control" type="password"
+                   th:placeholder="#{reg.password_repeat}"/></td>
+    </tr>
+    <tr>
+        <td>
+        <th th:text="#{reg.firstname}"></th>
+        </td>
+        <td><input id="reg_firstname" name="firstname" class="form-control" type="text"
+                   th:placeholder="#{reg.firstname}"/></td>
+    </tr>
+    <tr>
+        <td>
+        <th th:text="#{reg.lastname}"></th>
+        </td>
+        <td><input id="reg_lastname" name="lastname" class="form-control" type="text" th:placeholder="#{reg.lastname}"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        <th th:text="#{reg.email}"></th>
+        </td>
+        <td><input id="reg_email" name="email" class="form-control" type="email" th:placeholder="#{reg.email}"/></td>
+    </tr>
+    <td sec:authorize="isAuthenticated()">
+    <th sec:authorize="isAuthenticated()" th:text="#{reg.role}"></th>
+    </td>
+    <td sec:authorize="isAuthenticated()">
+        <input id="reg_role" name="password" class="form-control" type="text" th:placeholder="#{reg.role}"/>
+        <select name="roles">
+            <option th:each="role : ${roles}"
+                    th:text="${role.name}" th:selected="${role.name}"
+                    th:value="${role.id}"
+            >
+            </option>
+        </select>
+
+
+    </td>
+
+    <!--      <select name="cat_id">
+              <option th:text="#{filters.option}" th:value="null"/>
+              <option th:each="category : ${categories}"
+                      th:text="${category.title}" th:selected="${param.cat_id!=null && param.cat_id.toString()==category.id.toString()}"
+                      th:value="${category.id}"
+              >
+              </option>
+          </select>
+   -->
+
+
+    </tr>
+
+</table>
+<button class="button btnReg" id="reg_submit" name="sumbit" th:text="#{reg.submit}"/>
+<a class="button" id="reg_cancel" name="cancel" th:text="#{reg.cancel}" th:href="@{'/products/show'}"></a>
+</body>
+</html>

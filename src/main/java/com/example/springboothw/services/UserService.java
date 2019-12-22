@@ -7,4 +7,6 @@ public interface UserService extends UserDetailsService {
     User findByPhone(String phone);
     boolean isUserExist(String phone);
     Iterable<User> findAll();
+
+    void save(User user);
 }

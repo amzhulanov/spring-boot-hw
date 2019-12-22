@@ -28,14 +28,14 @@
         <div class="input-group">
             <input class="form-control" th:value="${param.minPrice}" name="minPrice"
                    type="number"
-                   placeholder="Минимальная стоимость продукта"/>
+                   th:placeholder="#{filters.price.min}"/>
             <input class="form-control" th:value="${param.maxPrice}" name="maxPrice"
                    type="number"
-                   placeholder="Максимальная цена"/>
+                   th:placeholder="#{filters.price.max}"/>
             <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<com.example.springboothw.entities.Product>"*/-->
             <!--/*@thymesVar id="p" type="com.example.springboothw.entities.Product"*/-->
             <select name="cat_id">
-                <option th:text="'Не выбрана'" th:value="null"/>
+                <option th:text="#{filters.option}" th:value="null"/>
                 <option th:each="category : ${categories}"
                         th:text="${category.title}" th:selected="${param.cat_id!=null && param.cat_id.toString()==category.id.toString()}"
                         th:value="${category.id}"
@@ -43,8 +43,8 @@
                 </option>
             </select>
 
-
-            <input class="button" type="submit" value="Применить фильтр"/>
+            <button type="submit" th:text="#{filters.apply}" class="button"></button>
+            <a class="button" th:href="@{'/products/?p=1'}" th:text="#{filters.reset}"></a>
 
         </div>
     </form>
