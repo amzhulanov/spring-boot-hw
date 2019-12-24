@@ -26,7 +26,7 @@ public class User {
     private String phone;
 
     @NotNull
-    @Min(5)
+
     @Column(name = "password")
     private String password;
 

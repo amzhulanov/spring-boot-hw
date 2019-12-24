@@ -11,10 +11,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,10 +35,14 @@ public class UserServiceImpl implements UserService {
         this.roleRepository = roleRepository;
     }
 
-    @Override
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+   @Override
     public User findByPhone(String phone) {
         return userRepository.findOneByPhone(phone);
     }
+
 
     @Override
     @Transactional
@@ -67,4 +73,27 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
         userRepository.save(user);
     }
+
+    @Override
+    public Boolean saveDefaultUser(User user) {
+       if (userRepository.findOneByPhone(user.getPhone())!=null
+            || userRepository.findOneByEmail(user.getEmail())!=null){
+           return false;
+       }
+
+       User newUser=new User();
+        if (user.getRoles()==null){
+            newUser.setRoles(roleRepository.findOneByName("ROLE_CUSTOMER"));
+        }
+        newUser.setPhone(user.getPhone());
+        newUser.setFirstName(user.getFirstName());
+        newUser.setLastName(user.getLastName());
+
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(newUser);
+
+        return true;
+    }
+
+
 }

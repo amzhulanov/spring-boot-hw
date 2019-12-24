@@ -23,11 +23,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.userService = userService;
     }
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/products/edit/**").hasAnyRole("ADMIN")
-                .antMatchers("/products/add/**").hasAnyRole("ADMIN")
+                .antMatchers("/products/edit/**").hasAnyRole("ADMIN","MANAGER")
+                .antMatchers("/products/add/**").hasAnyRole("ADMIN","MANAGER")
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/profile/**").authenticated()
                 .antMatchers("/products/orders/**").authenticated()
@@ -45,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(8);
     }
 
     @Bean

@@ -27,7 +27,7 @@
                 </li>
 
                 <li sec:authorize="hasAnyRole('ADMIN')" class="nav-item" th:classappend="${activeTab == 'Users_list' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/admin/users}" th:text="#{nav.userlist}"></a>
+                    <a class="nav-link" th:href="@{/admin/showListUsers}" th:text="#{nav.userlist}"></a>
                 </li>
 
                 <li sec:authorize="isAuthenticated()" class="nav-item">
@@ -48,7 +48,7 @@
                     </form>
                 </li>
                 <li class="nav-item">
-                    <form class="align-middle" th:action="@{/user/regNewUser}" method="POST">
+                    <form class="align-middle" th:action="@{/registration}" method="Get">
                         <div class="input-group-prepend">
                             <button id="navRegSubmit" class="btn btn-outline-warning btn-sm" style="margin-left: 10px;" type="submit" th:text="#{nav.reg.submit}"></button>
                         </div>
