@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Orders</title>
+    <link rel="stylesheet" th:href="@{/static/css/stylesheet.css}">
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <div th:replace="~{navigation :: navigation(Cart)}"/>
+    <div class="orders_history">
+        <div class="title_h1"><span><h1>История заказов</h1></span></div>
+
+        <div th:if="${orders.size() > 0}">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th th:text="#{orders.history.id}"></th>
+                    <th th:text="#{orders.history.cost}"></th>
+                    <th th:text="#{orders.history.address}"></th>
+                    <th th:text="#{orders.history.date}"></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}"/>
+                    <td th:text="${order.cost}"/>
+                    <td th:text="${order.address}"/>
+
+                </tr>
+                </tbody>
+            </table>
+            <span th:text="#{orders.history.sumCost}+' ' + ${cost}"/>
+        </div>
+        <div th:if="${orders.size() == 0}">
+            <th th:text="#{orders.history.null}"/>
+        </div>
+    </div>
+   </div>
+
+</body>
+</html>

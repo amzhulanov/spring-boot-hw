@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 
@@ -48,16 +49,18 @@ public class RegistrationController {
      */
     @PostMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public String addUser(@ModelAttribute User user, @RequestParam String password_repeat, BindingResult bindingResult,Model model) {
+    public String addUser(@Valid @ModelAttribute User user,BindingResult userBindingResult, @RequestParam String password_repeat,  Model model) {
         if (user.getPassword() != null && !user.getPassword().equals(password_repeat)) {
             model.addAttribute("passwordError", "Passwords are different!");
+            return "user_registration_form";
         }
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+        if (userBindingResult.hasErrors()) {
+            Map<String, String> errors = ControllerUtils.getErrors(userBindingResult);
+            System.out.println("обработка ошибок - "+ControllerUtils.getErrors(userBindingResult));
             model.mergeAttributes(errors);
             return "user_registration_form";
         }
-
+//Необходимо добавить обработку BindingResult в html страницу
         if (!userService.saveDefaultUser(user)){
             model.addAttribute("usernameError", "User exists!");
             return "user_registration_form";

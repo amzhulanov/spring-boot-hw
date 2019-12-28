@@ -1,6 +1,8 @@
 package com.example.springboothw.entities;
 
 import com.example.springboothw.utils.Cart;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@Data
+@NoArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,19 +33,6 @@ public class Order {
     @JoinColumn(name="address_id")
     private Address address;
 
-
-
-//    public Order(User user, Cart cart) {
-//        this.user = user;
-//        this.cost = cart.getCost();
-//        this.items = new ArrayList<>();
-//        for (OrderItem i : cart.getItems()) {
-//            i.setOrder(this);
-//            this.items.add(i);
-//        }
-//        cart.clear();
-//    }
-
     public Order(User user, Cart cart,Address address) {
         this.user = user;
         this.address=address;
@@ -53,4 +44,15 @@ public class Order {
         }
         cart.clear();
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "user=" + user +
+                ", items=" + items +
+                ", cost=" + cost +
+                ", address=" + address +
+                '}';
+    }
+
 }

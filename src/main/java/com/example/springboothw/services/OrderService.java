@@ -1,21 +1,13 @@
 package com.example.springboothw.services;
 
 import com.example.springboothw.entities.Order;
-import com.example.springboothw.repositories.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.springboothw.entities.User;
 
-@Service
-public class OrderService {
-    private OrderRepository orderRepository;
+import java.math.BigDecimal;
+import java.util.List;
 
-    @Autowired
-    public void setOrderRepository(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
-
-    public Order save(Order order) {
-        System.out.println("order save = "+order.toString());
-        return orderRepository.save(order);
-    }
+public interface OrderService {
+    Order save(Order order);
+    List<Order> findAllOrdersByUser(User user);
+    BigDecimal costOrders(List<Order> orders);
 }

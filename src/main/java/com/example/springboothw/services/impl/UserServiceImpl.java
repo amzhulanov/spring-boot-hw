@@ -40,7 +40,8 @@ public class UserServiceImpl implements UserService {
 
    @Override
     public User findByPhone(String phone) {
-        return userRepository.findOneByPhone(phone);
+       System.out.println("телефон для поиска="+phone);
+       return userRepository.findOneByPhone(phone);
     }
 
 
@@ -93,6 +94,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(newUser);
 
         return true;
+    }
+
+    private String validateUser(User user){
+       String nameError="";
+
+       return nameError;
     }
 
 

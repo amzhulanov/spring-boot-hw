@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <title>Интернет магазин</title>
 
@@ -14,46 +14,22 @@
 
 <div th:fragment="navigation(activeTab)">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+        <div class="collapse navbar-collapse" id="navbarNavMenu" col-sm-4>
+            <ul class="navbar-nav menu">
                 <li class="nav-item" th:classappend="${activeTab == 'Home' ? 'active' : ''}">
                     <a class="nav-link" th:href="@{/}" th:text="#{nav.home}"></a>
                 </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item" th:classappend="${activeTab == 'Profile' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/user/profile}" th:text="#{nav.profile}"><a/>
+                <li class="nav-item" th:classappend="${activeTab == 'Catalog' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/products/show}" th:text="#{nav.catalog}"></a>
                 </li>
-                <a class="nav-item" th:classappend="${activeTab == 'Cart' ? 'active' : ''}"></a>
+                <li>
+                    <a class="nav-item" th:classappend="${activeTab == 'Cart' ? 'active' : ''}"></a>
                     <a class="nav-link" th:href="@{/products/cart/show}" th:text="#{nav.cart}"></a>
                 </li>
-
-                <li sec:authorize="hasAnyRole('ADMIN')" class="nav-item" th:classappend="${activeTab == 'Users_list' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/admin/showListUsers}" th:text="#{nav.userlist}"></a>
-                </li>
-
-                <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <form th:action="@{/logout}" method="POST">
-                        <button id="navLogout" class="btn btn-outline-secondary" type="submit" th:text="#{nav.logout}"></button>
-                    </form>
-                </li>
-
-                <li sec:authorize="isAnonymous()" class="nav-item">
-                    <form class="align-middle" th:action="@{/authenticateTheUser}" method="POST">
-                        <div class="input-group-prepend">
-                            <input id="navLoginField" class="form-control" type="text" th:placeholder="#{nav.login.field}" name="username"
-                                   aria-describedby="inputGroup-sizing-sm"style="margin-left: 10px;">
-                            <input id="navPasswordField" class="form-control" type="password" th:placeholder="#{nav.password}" name="password"
-                                   aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
-                            <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm" style="margin-left: 10px;" type="submit" th:text="#{nav.login.submit}"></button>
-                        </div>
-                    </form>
-                </li>
-                <li class="nav-item">
-                    <form class="align-middle" th:action="@{/registration}" method="Get">
-                        <div class="input-group-prepend">
-                            <button id="navRegSubmit" class="btn btn-outline-warning btn-sm" style="margin-left: 10px;" type="submit" th:text="#{nav.reg.submit}"></button>
-                        </div>
-                    </form>
-                </li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNavUser" col-sm-4 col-sm-offset-4>
+            <ul class="navbar-nav menu">
                 <li>
                     <div class="dropdown" style="margin-left: 10px;">
                         <button class="btn btn-outline-secondary dropdown-toggle" th:text="#{nav.lang}" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -63,7 +39,49 @@
                         </div>
                     </div>
                 </li>
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <form class="align-middle" th:action="@{/authenticateTheUser}" method="POST">
+                        <div class="input-group-prepend">
+                            <input id="navLoginField" class="form-control" type="text" th:placeholder="#{nav.login.field}" name="username" aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
+                            <input id="navPasswordField" class="form-control" type="password" th:placeholder="#{nav.password}" name="password" aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
+                            <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm" style="margin-left: 10px;" type="submit" th:text="#{nav.login.submit}"></button>
+
+                        </div>
+                    </form>
+                </li>
+
+                <li sec:authorize="isAnonymous()" class="nav-item">
+                    <form class="align-middle" th:action="@{/registration}" method="GET">
+                        <button id="navRegistrSubmit" class="btn btn-outline-warning btn-sm" style="margin-left: 10px;" type="submit" th:text="#{nav.reg.submit}"></button>
+                    </form>
+                </li>
+                <!-- Вывод всех юзеров нужно перенести в админку-->
+                <li sec:authorize="hasAnyRole('ADMIN')" class="nav-item" th:classappend="${activeTab == 'Users_list' ? 'active' : ''}">
+                    <form class="align-middle" th:action="@{/admin/showListUsers}" method="POST">
+                        <button id="navShowListUsers" class="btn btn-outline-warning btn-sm" style="margin-left: 10px;" type="submit" th:text="#{nav.userlist}">
+                        </button>
+                    </form>
+                </li>
+
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <form th:action="@{/logout}" method="POST">
+                        <button id="navLogout" class="btn btn-outline-secondary" type="submit" th:text="#{nav.logout}"></button>
+                    </form>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <form th:action="@{/orders}" method="GET">
+                        <button id="navHistoryOrders" class="btn btn-outline-secondary" type="submit" th:text="#{nav.history.orders}"></button>
+                    </form>
+                </li>
+
+                <li sec:authorize="isAuthenticated()" class="nav-item" th:classappend="${activeTab == 'Profile' ? 'active' : ''}">
+                    <form class="align-middle" th:action="@{/user/profile}" method="POST">
+                        <button id="navProfile" class="btn btn-outline-secondary" type="submit" th:text="#{nav.profile}"></button>
+                    </form>
+                </li>
             </ul>
+
         </div>
+
     </nav>
 </div>

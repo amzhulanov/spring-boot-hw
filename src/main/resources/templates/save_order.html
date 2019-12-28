@@ -45,7 +45,7 @@
         <div class="title_h1"><span><h1> Адрес доставки </h1></span></div>
         <p></p>
         <div class="form">
-            <form th:action="@{/products/orders/commit}" method="GET">
+            <form th:action="@{/orders/commit}" method="POST">
                 <label><span>Получатель:</span><br/></label>
                     <span name="info" th:text="${user.getFirstName()} +' '+${user.getLastName()}+', '+${user.getPhone()}"/></br>
 

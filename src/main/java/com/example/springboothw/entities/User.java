@@ -26,16 +26,18 @@ public class User {
     private String phone;
 
     @NotNull
-
     @Column(name = "password")
     private String password;
 
+    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
+    @NotNull
     @Column(name = "last_name")
     private String lastName;
 
+    @NotNull
     @Column(name = "email")
     private String email;
 
