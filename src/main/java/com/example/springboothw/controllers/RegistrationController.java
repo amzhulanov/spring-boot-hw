@@ -50,6 +50,7 @@ public class RegistrationController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.OK)
     public String addUser(@Valid @ModelAttribute User user,BindingResult userBindingResult, @RequestParam String password_repeat,  Model model) {
+        //,BindingResult userBindingResult
         if (user.getPassword() != null && !user.getPassword().equals(password_repeat)) {
             model.addAttribute("passwordError", "Passwords are different!");
             return "user_registration_form";
@@ -65,8 +66,6 @@ public class RegistrationController {
             model.addAttribute("usernameError", "User exists!");
             return "user_registration_form";
         }
-
-        //userService.saveDefaultUser(user);
 
         return "index";
     }

@@ -8,14 +8,61 @@ DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS users cascade;
 DROP TABLE IF EXISTS roles cascade;
 DROP TABLE IF EXISTS users_roles cascade;
+drop table if exists reviews cascade;
 
 create table categories (category_id bigserial, title_fld varchar(255), primary key(category_id));
 insert into categories
 (title_fld) values
 ('drinks'), ('fastfood'),('dessert'),('fruits');
 
+CREATE TABLE users (
+                       id                    bigserial,
+                       phone                 VARCHAR(30) NOT NULL UNIQUE,
+                       password              VARCHAR(80),
+                       email                 VARCHAR(50),
+                       first_name            VARCHAR(50),
+                       last_name             VARCHAR(50),
+                       PRIMARY KEY (id)
+);
 
-CREATE TABLE products (product_id bigserial PRIMARY KEY, category_id bigint,description_fld VARCHAR(512), title_fld VARCHAR(255), cost_fld numeric(8,2), constraint fk_cat_id foreign key (category_id) references categories (category_id));
+CREATE TABLE roles (
+                       id                    serial,
+                       name                  VARCHAR(50) NOT NULL,
+                       PRIMARY KEY (id)
+);
+
+CREATE TABLE users_roles (
+                             user_id               INT NOT NULL,
+                             role_id               INT NOT NULL,
+                             PRIMARY KEY (user_id, role_id),
+                             FOREIGN KEY (user_id)
+                                 REFERENCES users (id),
+                             FOREIGN KEY (role_id)
+                                 REFERENCES roles (id)
+);
+
+INSERT INTO roles (name)
+VALUES
+('ROLE_CUSTOMER'), ('ROLE_MANAGER'), ('ROLE_ADMIN'),('ROLE_ONECLICK');
+
+
+
+
+CREATE TABLE products (product_id bigserial PRIMARY KEY,
+                        category_id bigint,
+                        description_fld VARCHAR(512),
+                        title_fld VARCHAR(255),
+                        cost_fld numeric(8,2),
+                        constraint fk_cat_id foreign key (category_id) references categories (category_id)
+                        );
+
+create table reviews(review_id bigserial PRIMARY KEY,
+                     product_id bigint,
+                     user_id bigint,
+                     description_fld varchar(255),
+                     constraint fk_user_id foreign key (user_id) references users (id),
+                     constraint fk_product_id foreign key (product_id) references products (product_id));
+
 INSERT INTO products (title_fld, category_id,description_fld, cost_fld) VALUES
 ('milk',1,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 10.5),
 ('sausage',2,'Seat and back with upholstery made of cold cure foam. Steel frame, available in matt powder-coated black', 37.2),
@@ -42,35 +89,6 @@ INSERT INTO products (title_fld, category_id,description_fld, cost_fld) VALUES
 
 
 
-CREATE TABLE users (
-                       id                    bigserial,
-                       phone                 VARCHAR(30) NOT NULL UNIQUE,
-                       password              VARCHAR(80),
-                       email                 VARCHAR(50) UNIQUE,
-                       first_name            VARCHAR(50),
-                       last_name             VARCHAR(50),
-                       PRIMARY KEY (id)
-);
-
-CREATE TABLE roles (
-                       id                    serial,
-                       name                  VARCHAR(50) NOT NULL,
-                       PRIMARY KEY (id)
-);
-
-CREATE TABLE users_roles (
-                             user_id               INT NOT NULL,
-                             role_id               INT NOT NULL,
-                             PRIMARY KEY (user_id, role_id),
-                             FOREIGN KEY (user_id)
-                                 REFERENCES users (id),
-                             FOREIGN KEY (role_id)
-                                 REFERENCES roles (id)
-);
-
-INSERT INTO roles (name)
-VALUES
-('ROLE_CUSTOMER'), ('ROLE_MANAGER'), ('ROLE_ADMIN');
 
 INSERT INTO users (phone, password, first_name, last_name, email)
 VALUES

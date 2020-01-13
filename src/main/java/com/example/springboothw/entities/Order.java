@@ -45,6 +45,18 @@ public class Order {
         cart.clear();
     }
 
+    public Order(User user, Cart cart) {
+        this.user = user;
+        this.cost = cart.getCost();
+        this.items = new ArrayList<>();
+        for (OrderItem i : cart.getItems()) {
+            i.setOrder(this);
+            this.items.add(i);
+        }
+        cart.clear();
+    }
+
+
     @Override
     public String toString() {
         return "Order{" +

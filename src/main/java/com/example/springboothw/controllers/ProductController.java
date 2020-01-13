@@ -1,6 +1,8 @@
 package com.example.springboothw.controllers;
 
 import com.example.springboothw.entities.*;
+import com.example.springboothw.services.ReviewService;
+import com.example.springboothw.services.UserService;
 import com.example.springboothw.utils.Cart;
 import com.example.springboothw.services.CategoryService;
 import com.example.springboothw.services.ProductService;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -26,14 +29,20 @@ import java.util.Map;
 public class ProductController {
     private CategoryService categoryService;
     private ProductService productService;
+    private ReviewService reviewService;
+    private UserService userService;
     private Cart cart;
 
     @Autowired
     public ProductController(CategoryService categoryService,
                              ProductService productService,
+                             ReviewService reviewService,
+                             UserService userService,
                              Cart cart) {
         this.productService = productService;
         this.categoryService = categoryService;
+        this.reviewService = reviewService;
+        this.userService = userService;
         this.cart = cart;
     }
 
@@ -103,5 +112,26 @@ public class ProductController {
         return "redirect:/products/cart/show";
     }
 
+    @PostMapping("/reviews")
+    @ResponseStatus(value = HttpStatus.OK)
+    public String addReview(@ModelAttribute("review") Review review) {
+        reviewService.save(review);
+        return "product_review_confirmation";
+    }
+
+    @GetMapping("/reviews/{id}")
+    public String editReview(Principal principal, Model model, @PathVariable Long id) {
+        User user = userService.findByPhone(principal.getName());
+        Product product = productService.findById(id);
+        Review review = new Review();
+        if (reviewService.findByUserAndProduct(user, product) != null) {
+            review = reviewService.findByUserAndProduct(user, product);
+        }
+        review.setUser(user);
+        review.setProduct(product);
+        model.addAttribute("review", review);
+        return "product_review";
+
+    }
 
 }

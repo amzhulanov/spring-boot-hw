@@ -3,23 +3,19 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>December Market</title>
-    <link rel="stylesheet" th:href="@{../static/css/stylesheet.css}">
+    <title th:text="#{feedback.title}"></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 
 <body>
 
 <div class="container">
     <div th:replace="~{navigation :: navigation(Home)}" />
-
-    <h1 th:text="'Ваш заказ #' + ${order_id_str} + 'сформирован'"></h1>
-    <p>Благодарим за покупку!</p>
-
+    <h1 th:text="'Спасибо за оставленный отзыв!'"></h1>
 </div>
 <div th:replace="footer :: footer" />
-
 </body>
 </html>

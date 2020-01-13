@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>Orders</title>
+    <title>Order</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
@@ -16,37 +16,37 @@
 <div class="container">
     <div th:replace="~{navigation :: navigation(Cart)}"/>
     <div class="orders_history">
-        <div class="title_h1"><span><h1>История заказов</h1></span></div>
+        <div class="title_h1"><span><h1>Заказ номер </h1></span></div>
 
-        <div th:if="${orders.size() > 0}">
+        <div>
             <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
-                    <th th:text="#{orders_history.id}"></th>
-                    <th th:text="#{orders_history.cost}"></th>
-                    <th th:text="#{orders_history.address}"></th>
-                    <th th:text="#{orders_history.date}"></th>
+                    <th th:text="#{product_id}"></th>
+                    <th th:text="#{product_name}"></th>
+                    <th th:text="#{product_description}"></th>
+                    <th th:text="#{product_cost}"></th>
+                    <th></th>
+
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="order: ${orders}">
+                <tr th:each="p: ${order.get().getItems()}">
 
-                        <td >
-                            <a th:href="@{'/orders/open/' + ${order.id}}" methods="GET" th:text="${order.id}"></a>
+                    <th th:text="${p.product.id}"></th>
+                    <th th:text="${p.product.title}"></th>
+                    <th th:text="${p.product.description}"></th>
+                    <th th:text="${p.product.cost}"></th>
+                        <td>
+                            <a th:href="@{'/products/reviews/' + ${p.product.id}}" methods="GET" class="button"
+                               th:text="#{product_review}"></a>
                         </td>
-                        <td th:text="${order.cost}"/>
-                        <td th:text="${order.address}"/>
-
                 </tr>
                 </tbody>
             </table>
-            <span th:text="#{orders_history.total_cost}+' ' + ${cost}"/>
-        </div>
-        <div th:if="${orders.size() == 0}">
-            <th th:text="#{orders.history.null}"/>
         </div>
     </div>
 </div>
-<div th:replace="footer :: footer" />
+
 </body>
 </html>

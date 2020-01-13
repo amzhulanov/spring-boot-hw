@@ -2,20 +2,17 @@ package com.example.springboothw.controllers;
 
 import com.example.springboothw.entities.Address;
 import com.example.springboothw.entities.Order;
+import com.example.springboothw.entities.OrderItem;
 import com.example.springboothw.entities.User;
 import com.example.springboothw.services.OrderService;
 import com.example.springboothw.services.UserService;
 import com.example.springboothw.utils.Cart;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/orders")
@@ -34,9 +31,19 @@ public class OrderController {
     public String showOrders(Principal principal,Model model){
         User user = userService.findByPhone(principal.getName());
         List<Order> orders= orderService.findAllOrdersByUser(user);
+
+       // List<OrderItem> orderItems=orderService.findAllOrderItemsByOrders(orders);// orders.get(0).getItems();
+
         model.addAttribute("orders",orders);
         model.addAttribute("cost", orderService.costOrders(orders));
         return "orders_history";
+    }
+
+    @GetMapping("/open/{id}")
+    public String openOrder(Model model,@PathVariable Long id){
+        Optional<Order> order= orderService.findById(id);
+        model.addAttribute("order",order);
+        return "order_form";
     }
 
     @GetMapping("/create")
@@ -61,4 +68,8 @@ public class OrderController {
         model.addAttribute("order_id_str", String.format("%05d", order.getId()));
         return "order_confirmation";
     }
+
+
+
+
 }

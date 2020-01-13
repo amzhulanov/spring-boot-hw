@@ -4,6 +4,8 @@ import com.example.springboothw.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import javax.swing.text.StyledEditorKit;
+
 public interface UserService extends UserDetailsService {
 
 
@@ -13,4 +15,5 @@ public interface UserService extends UserDetailsService {
 
     void save(User user);
     Boolean saveDefaultUser(User user);
+    User addNewUser(String phone);
 }

@@ -38,10 +38,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-   @Override
+    @Override
     public User findByPhone(String phone) {
-       System.out.println("телефон для поиска="+phone);
-       return userRepository.findOneByPhone(phone);
+        System.out.println("телефон для поиска=" + phone);
+        return userRepository.findOneByPhone(phone);
     }
 
 
@@ -75,31 +75,55 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+
+    /**
+     * При регистрации пользователь заполняет поля данных на форме.
+     * Дефолтная роль ROLE_CUSTOMER присваивается по умолчанию.
+     * Если в базе уже был найден пользователь с таким же телефоном и ролью ROLE_ONECLICK,
+     * то существующий пользователь обновляется.
+     * Если в базе уже был найден пользователь с таким же телефоном и ролью отличной от ROLE_ONECLICK,
+     * то генерируется ошибка
+     * Иначе создаётся новый пользователь
+     */
     @Override
     public Boolean saveDefaultUser(User user) {
-       if (userRepository.findOneByPhone(user.getPhone())!=null
-            || userRepository.findOneByEmail(user.getEmail())!=null){
-           return false;
-       }
-
-       User newUser=new User();
-        if (user.getRoles()==null){
-            newUser.setRoles(roleRepository.findOneByName("ROLE_CUSTOMER"));
+        if (userRepository.findOneByEmail(user.getEmail()) != null) {
+            return false;
         }
+        if (userRepository.findOneByPhone(user.getPhone()) != null) {
+            System.out.println("Найден такой же пользователь  с ролью " + userRepository.findOneByPhone(user.getPhone()).getRoles().toString());
+            for (Role role : userRepository.findOneByPhone(user.getPhone()).getRoles()) {
+                if (!role.getName().equals("ROLE_ONECLICK")) {
+                    return false;
+                }
+            }
+        }
+        User newUser = new User();
+        newUser.setId(userRepository.findOneByPhone(user.getPhone()).getId());
+        newUser.setRoles(roleRepository.findOneByName("ROLE_CUSTOMER"));
         newUser.setPhone(user.getPhone());
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
-
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(newUser);
-
         return true;
     }
 
-    private String validateUser(User user){
-       String nameError="";
+    private String validateUser(User user) {
+        String nameError = "";
+        return nameError;
+    }
 
-       return nameError;
+    public User addNewUser(String phone) {
+        if (userRepository.findOneByPhone(phone) != null) {
+            return userRepository.findOneByPhone(phone);
+        }
+        User newUser = new User();
+        newUser.setPhone(phone);
+        newUser.setRoles(roleRepository.findOneByName("ROLE_ONECLICK"));
+        userRepository.save(newUser);
+        return newUser;
+
     }
 
 
