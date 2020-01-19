@@ -16,11 +16,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,23 +35,26 @@ public class ProductController {
     private ReviewService reviewService;
     private UserService userService;
     private Cart cart;
+    private CookieController cookieController;
 
     @Autowired
     public ProductController(CategoryService categoryService,
                              ProductService productService,
                              ReviewService reviewService,
                              UserService userService,
-                             Cart cart) {
+                             Cart cart,
+                             CookieController cookieController) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.reviewService = reviewService;
         this.userService = userService;
         this.cart = cart;
+        this.cookieController=cookieController;
     }
 
     // http://localhost:8189/app/products/show
     @GetMapping(path = "/show")
-    public String showAllProducts(Model model, @RequestParam Map<String, String> params) {
+    public String showAllProducts(Model model, @RequestParam Map<String, String> params, HttpServletRequest request) {
         int pageIndex = 0;
         if (params.containsKey("p")) {
             pageIndex = Integer.parseInt(params.get("p")) - 1;
@@ -57,11 +63,11 @@ public class ProductController {
         ProductFilter productFilter = new ProductFilter(params);
         Page<Product> page = productService.findAll(productFilter.getSpec(), pageRequest);
         List<Category> categories = categoryService.getAll();
-
+        List<Cookie> cookies= cookieController.readAllCookies(request);
         model.addAttribute("filtersDef", productFilter.getFilterDefinition());
         model.addAttribute("page", page);
         model.addAttribute("categories", categories);
-
+        model.addAttribute("cookies",cookies);
         return "catalog_products";
     }
 
@@ -73,6 +79,7 @@ public class ProductController {
         List<Category> categories = categoryService.getAll();
         model.addAttribute("product", product);
         model.addAttribute("categories", categories);
+
         return "product_form";
     }
 
@@ -82,13 +89,13 @@ public class ProductController {
         productService.save(product);
         return "redirect:/products/show";
     }
-
+    // http://localhost:8189/app/cart/show
     @GetMapping(path = "/cart/show")
     public String showCart(Model model) {
         model.addAttribute("cart", cart);
         return "cart";
     }
-
+    // http://localhost:8189/app/products/cart/edit/1
     @GetMapping(path = "/cart/add/{index}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -98,13 +105,15 @@ public class ProductController {
         return "success";
     }
 
-    @GetMapping(path = "/cart/countRequest")
+    // http://localhost:8189/app/products/cart/count
+    @GetMapping(path = "/cart/count")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public Integer getCartCount() {
         return cart.countProdCart();
     }
 
+    // http://localhost:8189/app/products/cart/del/1
     @GetMapping("/cart/del/{id}")
     public String cartDelById(@PathVariable Long id) {
         System.out.println("id продукта на удаление = " + id);
@@ -112,26 +121,29 @@ public class ProductController {
         return "redirect:/products/cart/show";
     }
 
-    @PostMapping("/reviews")
+    // http://localhost:8189/app/products/review/add
+    @PostMapping("/review/add/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public String addReview(@ModelAttribute("review") Review review) {
-        reviewService.save(review);
+    public String addReview(Principal principal
+                            ,@PathVariable Long id
+                            ,@RequestParam  Integer rating
+                            //,@ModelAttribute("product") Product product
+                            //TODO так и не разобрался, почему product приходит пустым
+                            ,@ModelAttribute("review") String review_description){
+        User user = userService.findByPhone(principal.getName());
+        Product product=productService.findById(id);
+        reviewService.save(product,review_description,user,rating);
         return "product_review_confirmation";
     }
 
-    @GetMapping("/reviews/{id}")
-    public String editReview(Principal principal, Model model, @PathVariable Long id) {
-        User user = userService.findByPhone(principal.getName());
+    // http://localhost:8189/app/products/open/
+    @GetMapping("/open/{id}")
+    public String editReview(Model model, @PathVariable Long id,HttpServletRequest request, HttpServletResponse response) {
         Product product = productService.findById(id);
-        Review review = new Review();
-        if (reviewService.findByUserAndProduct(user, product) != null) {
-            review = reviewService.findByUserAndProduct(user, product);
-        }
-        review.setUser(user);
-        review.setProduct(product);
-        model.addAttribute("review", review);
-        return "product_review";
+        cookieController.writeCookie(response,product);
+        model.addAttribute("product",product);
 
+        return "product_form";
     }
 
 }
