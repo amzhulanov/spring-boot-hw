@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
 
     <title>Spring Data Demo</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
@@ -16,8 +17,9 @@
 <body>
 
 <div class="container_main">
+    <div th:replace="~{navigation :: navigation(Home)}" />
     <div class="header">
-        <h1>Каталог продуктов</h1>
+        <h1 th:text="#{catalog_prod.title}"></h1>
     </div>
 <div class="body">
    <div class="filter">
@@ -27,23 +29,23 @@
         <div class="input-group">
             <input class="form-control" th:value="${param.minPrice}" name="minPrice"
                    type="number"
-                   placeholder="Минимальная стоимость продукта"/>
+                   th:placeholder="#{filters.price.min}"/>
             <input class="form-control" th:value="${param.maxPrice}" name="maxPrice"
                    type="number"
-                   placeholder="Максимальная цена"/>
+                   th:placeholder="#{filters.price.max}"/>
             <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<com.example.springboothw.entities.Product>"*/-->
             <!--/*@thymesVar id="p" type="com.example.springboothw.entities.Product"*/-->
             <select name="cat_id">
-                <option th:text="'Не выбрана'" th:value="null"/>
+                <option th:text="#{filters.option}" th:value="null"/>
                 <option th:each="category : ${categories}"
-                        th:text="${category.title}" th:selected="${param.cat_id!=null && param.cat_id.toString()==category.id.toString()}"
+                        th:text="${category.title}" th:selected="${param.cat_id!=null && param.cat_id==category.id.toString()}"
                         th:value="${category.id}"
                         >
                 </option>
             </select>
 
-
-            <input class="button" type="submit" value="Применить фильтр"/>
+            <button type="submit" th:text="#{filters.apply}" class="button"></button>
+            <a class="button" th:href="@{'/products/?p=1'}" th:text="#{filters.reset}"></a>
 
         </div>
     </form>
@@ -55,9 +57,10 @@
         <thead>
         <tr>
             <th scope="col">id</th>
-            <th scope="col">Категория</th>
-            <th scope="col">Описание</th>
-            <th scope="col">Цена</th>
+            <th scope="col" th:text="#{catalog_prod.category}"></th>
+            <th scope="col" th:text="#{catalog_prod.description}"></th>
+            <th scope="col" th:text="#{catalog_prod.price}"></th>
+            <th sec:authorize="hasAnyRole('ADMIN')"  th:text="#{catalog_prod.edit}"></th>
             <th/>
         </tr>
         </thead>
@@ -77,21 +80,18 @@
             <td th:text="${p.cost}"/>
             <td>
 
-                <a th:href="@{'/products/edit/' + ${p.id}}" class="button">Редактировать</a>
-                <button class="button btnPost" th:name="'button'+${p.id}"  th:value="${p.id}">В корзину</button>
+                <button class="button btnPost" th:name="'button'+${p.id}"  th:value="${p.id}" th:text="#{catalog_prod.addCart}"></button>
 
 
-                  <!--<a th:href="@{'/products/add_to_cart/' + ${p.id}}" class="button">В корзину</a>-->
-
+            </td>
+            <td sec:authorize="hasAnyRole('ADMIN')">
+                <a th:href="@{'/products/edit/' + ${p.id}}" class="button" th:text="#{catalog_prod.editCart}"></a>
             </td>
         </tr>
         </tbody>
     </table>
-       <label id="lblCounter">Товаров в корзине</label>
-       <a th:href="@{'/products/cart/show'}" class="button">Открыть корзину</a>
-<!--<div >
-    <button class="button" id="btnPost">В корзину</button>
-</div>-->
+       <label id="lblCounter" th:text="#{catalog_prod.count}"></label>
+       <a th:href="@{'/products/cart/show'}" class="button" th:text="#{catalog_prod.openCart}"></a>
 
 </div>
   </div>
@@ -102,7 +102,7 @@
             <li class="page-item">
                 <a class="page-link"
                    th:style="${page.getNumber()}== 0 ? 'pointer-events: none;':'pointer-events: auto;'"
-                   th:href="@{'/products/show/?p=' + ${page.getPageable().getPageNumber()} + ${filtersDef}}"
+                   th:href="@{'/products/show?p=' + ${page.getPageable().getPageNumber()} + ${filtersDef}}"
                    aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -118,8 +118,8 @@
 
             <li class="page-item">
                 <a class="page-link"
-                   th:style="${page.getNumber()}==${page.getTotalPages()-1} ? 'pointer-events: none;':'pointer-events: auto;'"
-                   th:href="@{'/products/show/?p=' + ${page.getPageable().getPageNumber()+2} + ${filtersDef}}"
+                   th:style="${page.getNumber()==(page.getTotalPages()-1)} ? 'pointer-events: none;':'pointer-events:auto;' "
+                   th:href="@{'/products/show?p=' + ${page.getPageable().getPageNumber()+2} + ${filtersDef}}"
                    aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
@@ -130,12 +130,11 @@
     </div>
     
     <br>
-    
 
-<div class="footer">
-    <a th:href="@{/}">на Главную страницу</a>
 
-</div>
+    <div th:replace="footer :: footer" />
+
+
 </div>
 </body>
 </html>

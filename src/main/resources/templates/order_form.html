@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Order</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <div th:replace="~{navigation :: navigation(Cart)}"/>
+    <div class="orders_history">
+        <div class="title_h1"><span><h1>Заказ номер </h1></span></div>
+
+        <div>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th th:text="#{product_id}"></th>
+                    <th th:text="#{product_name}"></th>
+                    <th th:text="#{product_description}"></th>
+                    <th th:text="#{product_cost}"></th>
+                    <th></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p: ${order.get().getItems()}">
+
+                    <th th:text="${p.product.id}"></th>
+                    <th th:text="${p.product.title}"></th>
+                    <th th:text="${p.product.description}"></th>
+                    <th th:text="${p.product.cost}"></th>
+                        <td>
+                            <a th:href="@{'/products/reviews/' + ${p.product.id}}" methods="GET" class="button"
+                               th:text="#{product_review}"></a>
+                        </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

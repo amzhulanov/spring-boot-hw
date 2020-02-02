@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Orders</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <div th:replace="~{navigation :: navigation(Cart)}"/>
+    <div class="orders_history">
+        <div class="title_h1"><span><h1>История заказов</h1></span></div>
+
+        <div th:if="${orders.size() > 0}">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th th:text="#{orders_history.id}"></th>
+                    <th th:text="#{orders_history.cost}"></th>
+                    <th th:text="#{orders_history.address}"></th>
+                    <th th:text="#{orders_history.date}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order: ${orders}">
+
+                        <td >
+                            <a th:href="@{'/orders/open/' + ${order.id}}" methods="GET" th:text="${order.id}"></a>
+                        </td>
+                        <td th:text="${order.cost}"/>
+                        <td th:text="${order.address}"/>
+
+                </tr>
+                </tbody>
+            </table>
+            <span th:text="#{orders_history.total_cost}+' ' + ${cost}"/>
+        </div>
+        <div th:if="${orders.size() == 0}">
+            <th th:text="#{orders.history.null}"/>
+        </div>
+    </div>
+</div>
+<div th:replace="footer :: footer" />
+</body>
+</html>

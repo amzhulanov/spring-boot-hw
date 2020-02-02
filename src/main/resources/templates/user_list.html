@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{../css/style.css}" />
+    <script th:src="@{../js/main.js}"></script>
+</head>
+<body>
+<div th:replace="~{navigation :: navigation(Home)}" />
+<div class="products">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Password</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Roles</th>
+
+            <th/>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <th scope="row" th:value="${user.id}"></th>
+
+            <!--/*@thymesVar id="page" type="org.springframework.data.domain.Page<com.example.springboothw.entities.Product>"*/-->
+            <!--/*@thymesVar id="p" type="com.example.springboothw.entities.Product"*/-->
+            <td th:text="${user.id}"/>
+            <td th:text="${user.phone}"/>
+            <td th:text="${user.password}"/>
+            <td th:text="${user.firstName}"/>
+            <td th:text="${user.lastName}"/>
+            <td th:text="${user.email}"/>
+            <td th:text="${user.roles}"/>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

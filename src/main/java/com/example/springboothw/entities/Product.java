@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @NoArgsConstructor
 @Data
@@ -27,7 +28,7 @@ public class Product {
     private String title;
 
     @Column(name = "cost_fld")
-    private float cost;
+    private BigDecimal cost;
 
 
 }
