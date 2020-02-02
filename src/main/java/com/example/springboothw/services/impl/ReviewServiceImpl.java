@@ -8,6 +8,8 @@ import com.example.springboothw.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReviewServiceImpl implements ReviewService {
     private ReviewRepository reviewRepository;
@@ -27,7 +29,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void save(Review review) {
+    public void save(Product product,String review_description,User user,Integer rating) {
+        Review review=new Review();
+        review.setProduct(product);
+        review.setUser(user);
+        review.setDescription(review_description);
+        review.setRating(rating);
         reviewRepository.save(review);
-    };
+    }
+
 }

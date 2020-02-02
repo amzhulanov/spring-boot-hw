@@ -1,6 +1,7 @@
 package com.example.springboothw.services;
 
 import com.example.springboothw.entities.Product;
+import com.example.springboothw.entities.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,4 +23,5 @@ public interface ProductService  {
     Product update(Product product);
 
     void deleteById(Long id);
+
 }

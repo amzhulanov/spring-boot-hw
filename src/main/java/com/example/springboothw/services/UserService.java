@@ -5,15 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.swing.text.StyledEditorKit;
+import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
 
 
+    //User findByPhone(String phone,Boolean buyOneClick);
     User findByPhone(String phone);
     boolean isUserExist(String phone);
     Iterable<User> findAll();
 
     void save(User user);
-    Boolean saveDefaultUser(User user);
-    User addNewUser(String phone);
+    User saveUser(User user);
+   // User addNewUser(String phone);
 }

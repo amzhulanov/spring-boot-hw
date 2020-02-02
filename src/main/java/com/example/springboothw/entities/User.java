@@ -1,6 +1,7 @@
 package com.example.springboothw.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -44,8 +46,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
+//    @OneToMany(mappedBy = "user")
+//    private List<Review> reviews;
+
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
+
+
 }
 

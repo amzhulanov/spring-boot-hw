@@ -1,5 +1,7 @@
 package com.example.springboothw.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class Category {
     private String title;
 
     @OneToMany(mappedBy = "category") //одной категории соответствует много товаров
+    @JsonBackReference
     private List<Product> products;
 
     public Long getId() {
