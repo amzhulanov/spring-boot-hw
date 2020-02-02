@@ -3,8 +3,10 @@ package com.example.springboothw.services.impl;
 
 import com.example.springboothw.entities.Role;
 import com.example.springboothw.entities.User;
+import com.example.springboothw.repositories.OrderRepository;
 import com.example.springboothw.repositories.RoleRepository;
 import com.example.springboothw.repositories.UserRepository;
+import com.example.springboothw.services.OrderService;
 import com.example.springboothw.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,14 +26,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Autowired
-    public void setRoleRepository(RoleRepository roleRepository) {
+    public void setUserRepository(UserRepository userRepository
+                                    , RoleRepository roleRepository
+                                  //,OrderService orderService) {
+                                  ){
+        this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+
+        //this.orderService = orderService;
     }
 
     @Autowired
@@ -40,10 +43,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByPhone(String phone) {
-        System.out.println("телефон для поиска=" + phone);
-        return userRepository.findOneByPhone(phone);
+           return userRepository.findOneByPhone(phone);
     }
-
 
     @Override
     @Transactional
@@ -75,55 +76,27 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-
-    /**
-     * При регистрации пользователь заполняет поля данных на форме.
-     * Дефолтная роль ROLE_CUSTOMER присваивается по умолчанию.
-     * Если в базе уже был найден пользователь с таким же телефоном и ролью ROLE_ONECLICK,
-     * то существующий пользователь обновляется.
-     * Если в базе уже был найден пользователь с таким же телефоном и ролью отличной от ROLE_ONECLICK,
-     * то генерируется ошибка
-     * Иначе создаётся новый пользователь
-     */
     @Override
-    public Boolean saveDefaultUser(User user) {
-        if (userRepository.findOneByEmail(user.getEmail()) != null) {
-            return false;
-        }
-        if (userRepository.findOneByPhone(user.getPhone()) != null) {
-            System.out.println("Найден такой же пользователь  с ролью " + userRepository.findOneByPhone(user.getPhone()).getRoles().toString());
-            for (Role role : userRepository.findOneByPhone(user.getPhone()).getRoles()) {
-                if (!role.getName().equals("ROLE_ONECLICK")) {
-                    return false;
-                }
-            }
-        }
-        User newUser = new User();
-        newUser.setId(userRepository.findOneByPhone(user.getPhone()).getId());
-        newUser.setRoles(roleRepository.findOneByName("ROLE_CUSTOMER"));
-        newUser.setPhone(user.getPhone());
-        newUser.setFirstName(user.getFirstName());
-        newUser.setLastName(user.getLastName());
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(newUser);
-        return true;
-    }
-
-    private String validateUser(User user) {
-        String nameError = "";
-        return nameError;
-    }
-
-    public User addNewUser(String phone) {
-        if (userRepository.findOneByPhone(phone) != null) {
-            return userRepository.findOneByPhone(phone);
-        }
-        User newUser = new User();
-        newUser.setPhone(phone);
-        newUser.setRoles(roleRepository.findOneByName("ROLE_ONECLICK"));
-        userRepository.save(newUser);
-        return newUser;
-
+    //public Boolean saveUser(User user) {
+    public User saveUser(User user) {
+//        if (userRepository.findOneByEmail(user.getEmail()) != null
+//                || userRepository.findOneByPhone(user.getPhone()) != null) {
+//            return false;
+//        }
+//        User newUser = new User();
+//        newUser.setRoles(roleRepository.findOneByName("ROLE_CUSTOMER"));
+//        newUser.setPhone(user.getPhone());
+//        newUser.setFirstName(user.getFirstName());
+//        newUser.setLastName(user.getLastName());
+//        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(roleRepository.findOneByName("ROLE_CUSTOMER"));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+       // userRepository.save(newUser);
+        //orderRepository.updateAllUserByPhone(newUser.getPhone(),newUser);
+       // return true;
+        return //userRepository.save(newUser);
+                userRepository.save(user);
     }
 
 

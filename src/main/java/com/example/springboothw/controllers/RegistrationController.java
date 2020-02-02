@@ -1,8 +1,8 @@
 package com.example.springboothw.controllers;
 
-import com.example.springboothw.entities.Role;
 import com.example.springboothw.entities.User;
 import com.example.springboothw.repositories.RoleRepository;
+import com.example.springboothw.services.OrderService;
 import com.example.springboothw.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -19,11 +20,12 @@ import java.util.Map;
 public class RegistrationController {
     private UserService userService;
     private RoleRepository roleRepository;
+    private OrderService orderService;
 
-
-    public RegistrationController(UserService userService, RoleRepository roleRepository) {
+    public RegistrationController(UserService userService, RoleRepository roleRepository,OrderService orderService) {
         this.userService = userService;
         this.roleRepository = roleRepository;
+        this.orderService=orderService;
     }
 
     /**
@@ -47,6 +49,7 @@ public class RegistrationController {
      * @return
      * проверяю, чтобы оба пароля совпадали, и пользователя не было в базе
      */
+    @Transactional
     @PostMapping
     @ResponseStatus(value = HttpStatus.OK)
     public String addUser(@Valid @ModelAttribute User user,BindingResult userBindingResult, @RequestParam String password_repeat,  Model model) {
@@ -62,11 +65,14 @@ public class RegistrationController {
             return "user_registration_form";
         }
 //Необходимо добавить обработку BindingResult в html страницу
-        if (!userService.saveDefaultUser(user)){
-            model.addAttribute("usernameError", "User exists!");
-            return "user_registration_form";
-        }
+        //User newUser=userService.saveUser(user);
+//        if (!userService.saveUser(user)){
+//            model.addAttribute("usernameError", "User exists!");
+//            return "user_registration_form";
+//        }
+        userService.saveUser(user);
+        orderService.checkOrders(user);
 
-        return "index";
+        return "user_registration_confirmation";
     }
 }

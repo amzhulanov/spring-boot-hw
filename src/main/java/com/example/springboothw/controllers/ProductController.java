@@ -63,6 +63,7 @@ public class ProductController {
         ProductFilter productFilter = new ProductFilter(params);
         Page<Product> page = productService.findAll(productFilter.getSpec(), pageRequest);
         List<Category> categories = categoryService.getAll();
+
         List<Cookie> cookies= cookieController.readAllCookies(request);
         model.addAttribute("filtersDef", productFilter.getFilterDefinition());
         model.addAttribute("page", page);
@@ -140,9 +141,10 @@ public class ProductController {
     @GetMapping("/open/{id}")
     public String editReview(Model model, @PathVariable Long id,HttpServletRequest request, HttpServletResponse response) {
         Product product = productService.findById(id);
-        cookieController.writeCookie(response,product);
+        cookieController.writeCookie(request,response,product,"/app/products");
+        List<Cookie> cookies= cookieController.readAllCookies(request);
         model.addAttribute("product",product);
-
+        model.addAttribute("cookies",cookies);
         return "product_form";
     }
 

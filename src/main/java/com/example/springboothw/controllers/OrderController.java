@@ -11,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.*;
 
@@ -28,14 +31,13 @@ public class OrderController {
     }
 
     @GetMapping
-    public String showOrders(Principal principal,Model model){
+    public String showOrders(Principal principal, Model model, HttpServletRequest request){
         User user = userService.findByPhone(principal.getName());
         List<Order> orders= orderService.findAllOrdersByUser(user);
-
-       // List<OrderItem> orderItems=orderService.findAllOrderItemsByOrders(orders);// orders.get(0).getItems();
-
+        List<Cookie> cookies= Arrays.asList(request.getCookies());
         model.addAttribute("orders",orders);
         model.addAttribute("cost", orderService.costOrders(orders));
+        model.addAttribute("cookies",cookies);
         return "orders_history";
     }
 
@@ -48,7 +50,12 @@ public class OrderController {
 
     @GetMapping("/create")
     public String createOrder(Principal principal, Model model) {
-        User user = userService.findByPhone(principal.getName());
+        User user;
+        if (principal==null){
+            user=userService.findByPhone("buyOneClick");
+        }else {
+            user = userService.findByPhone(principal.getName());
+        }
         model.addAttribute(cart);
         model.addAttribute("user",user);
         return "save_order";
@@ -56,15 +63,7 @@ public class OrderController {
 
     @PostMapping("/commit")
     public String commitOrder(Principal principal, Model model, @RequestParam Map<String, String> params) {
-        Address address = new Address();
-        address.setCity(params.get("city"));
-        address.setStreet(params.get("street"));
-        address.setHouse(params.get("house"));
-
-        System.out.println("Пользователь = "+principal.getName());
-        User user = userService.findByPhone(principal.getName());
-        Order order = new Order(user, cart, address);
-        orderService.save(order);
+        Order order=orderService.save(principal,params,cart);
         model.addAttribute("order_id_str", String.format("%05d", order.getId()));
         return "order_confirmation";
     }

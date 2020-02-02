@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Entity
 @Data
@@ -18,6 +20,11 @@ public class Review {
 
     @Column(name = "description_fld")
     private String description;
+
+    @Column(name="rating_fld")
+    @Min(0)
+    @Max(5)
+    private Integer rating;
 
     @ManyToOne
     @JoinColumn(name = "product_id") //много отзывов соответствует одному товару

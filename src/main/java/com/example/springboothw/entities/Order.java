@@ -19,7 +19,7 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -29,33 +29,25 @@ public class Order {
     @Column(name = "cost_fld")
     private BigDecimal cost;
 
+    @Column(name = "phone_number")
+    private String phone;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="address_id")
     private Address address;
 
-    public Order(User user, Cart cart,Address address) {
+    public Order(User user, Cart cart,Address address,String phone) {
         this.user = user;
         this.address=address;
         this.cost = cart.getCost();
         this.items = new ArrayList<>();
+        this.phone=phone;
         for (OrderItem i : cart.getItems()) {
             i.setOrder(this);
             this.items.add(i);
         }
         cart.clear();
     }
-
-    public Order(User user, Cart cart) {
-        this.user = user;
-        this.cost = cart.getCost();
-        this.items = new ArrayList<>();
-        for (OrderItem i : cart.getItems()) {
-            i.setOrder(this);
-            this.items.add(i);
-        }
-        cart.clear();
-    }
-
 
     @Override
     public String toString() {

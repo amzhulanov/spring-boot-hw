@@ -25,16 +25,15 @@ public class CookieController {
 //    }
 
 
-    public void writeCookie(HttpServletResponse response, Product product) {
-        System.out.println("CookieControllerExample writeCookieExample() is called");
-        Cookie cookie = new Cookie("productId", product.getId().toString());
+    public void writeCookie(HttpServletRequest request, HttpServletResponse response, Product product,String path) {
+        Cookie cookie = new Cookie("productId", request.getRequestURI().toString());
+        cookie.setPath(path);
         response.addCookie(cookie);
 
     }
 
 
     public List<Cookie> readAllCookies(HttpServletRequest request) {
-        System.out.println("CookieControllerExample readAllCookiesExample() is called");
         List<Cookie> cookies =new ArrayList<>();// = Arrays.asList(request.getCookies());
         for (Cookie c:request.getCookies()){
             if (c.getName().equals("productId")){
