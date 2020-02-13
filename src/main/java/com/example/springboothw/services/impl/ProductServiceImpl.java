@@ -1,9 +1,10 @@
 package com.example.springboothw.services.impl;
 
+import com.example.springboothw.dto.ProductDto;
 import com.example.springboothw.entities.Product;
-import com.example.springboothw.entities.Review;
 import com.example.springboothw.repositories.ProductRepository;
 import com.example.springboothw.services.ProductService;
+
 import com.example.springboothw.utils.spec.ProductSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -102,6 +103,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<ProductDto> findAllBy() {
+        return productRepository.findAllBy();
     }
 
 

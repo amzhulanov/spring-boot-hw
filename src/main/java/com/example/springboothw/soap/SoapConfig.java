@@ -38,18 +38,5 @@ public class SoapConfig extends WsConfigurerAdapter {
         return new SimpleXsdSchema(new ClassPathResource("soap/catalog.xsd"));
     }
 
-    @Bean(name = "order")
-    public DefaultWsdl11Definition orderWsdl11Definition(XsdSchema orderXsdSchema) {
-        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-        wsdl11Definition.setPortTypeName("OrderPort");
-        wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://www.springboothw.example.com/soap/order");
-        wsdl11Definition.setSchema(orderXsdSchema);
-        return wsdl11Definition;
-    }
 
-    @Bean(name = "orderXsdSchema")
-    public XsdSchema orderXsdSchema() {
-        return new SimpleXsdSchema(new ClassPathResource("soap/order.xsd"));
-    }
 }
