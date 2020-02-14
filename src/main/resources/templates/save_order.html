@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>Подтверждение заказа</title>
+    <title th:text="#{save_order.title}"></title>
     <link rel="stylesheet" th:href="@{../static/css/stylesheet.css}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -11,19 +11,19 @@
 </head>
 
 <body>
-
+<form th:action="@{/orders/commit}" method="POST">
 <div class="container">
     <div th:replace="~{navigation :: navigation(Cart)}"/>
     <div class="save_cart">
-        <div class="title_h1"><span><h1>Информация о заказе</h1></span></div>
+        <div class="title_h1"><span th:text="#{save_order.h1}"></span></div>
 
         <div th:if="${cart.items.size() > 0}">
             <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
-                    <th>Название товара</th>
-                    <th>Количество</th>
-                    <th>Цена</th>
+                    <th th:text="#{save_order.product.name}"></th>
+                    <th th:text="#{save_order.product.count}"></th>
+                    <th th:text="#{save_order.product.cost}"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,40 +35,49 @@
                 </tr>
                 </tbody>
             </table>
-            <span th:text="'Общая стоимость: ' + ${cart.cost}"/>
+            <span th:text="#{save_order.cost} + ${cart.cost}"/>
         </div>
         <div th:if="${cart.items.size() == 0}">
-            <span text="Ваша корзина пуста"/>
+            <span th:text="#{save_order.empty}"></span>
         </div>
     </div>
-    <div class="delivery">
-        <div class="title_h1"><span><h1> Адрес доставки </h1></span></div>
-        <p></p>
+    <div class="delivery" th:if="${user.getFirstName()!='buyOneClick'}">
+        <span class="title_h1" th:text="#{save_order.delivery}"></span>
+
         <div class="form">
-            <form th:action="@{/orders/commit}" method="POST">
-                <label><span>Получатель:</span><br/></label>
+                <label><span th:text="#{save_order.delivery.recipient}"></span><br/></label>
                     <span name="info" th:text="${user.getFirstName()} +' '+${user.getLastName()}+', '+${user.getPhone()}"/></br>
-
-
-                <label><span class="address email"> E-mail:</span><br/>
+                <label><span class="address email" th:text="#{save_order.delivery.email}"></span><br/>
                     <input type="email" class="guest" name="email" required/></label>
                 <p></p>
-                <label><span class="address city">Город:</span><br/>
+                <label><span class="address city" th:text="#{save_order.delivery.city}"></span><br/>
                     <input type="text" class="guest" name="city" required/>  </label>
                 <p></p>
-                <label><span class="address city">Улица:</span><br/>
+                <label><span class="address city" th:text="#{save_order.delivery.street}"></span><br/>
                     <input type="text" class="guest" name="street" required/></label>
                 <p></p>
-                <label><span class="address city">Номер дома:</span><br/>
+                <label><span class="address city" th:text="#{save_order.delivery.app}"></span><br/>
                     <input type="text" class="guest" name="house" required/></label>
                 <p></p>
-                <button type="submit" class="btn btn-warning">Подтвердить заказ</button>
-            </form>
+            <label><span class="address phone" th:text="#{save_order.delivery.phone}"></span><br/>
+                <input type="text" class="guest" name="phone" required/></label>
+            <p></p>
 
         </div>
+    </div>
+    <div class="delivery" th:if="${user.getFirstName()=='buyOneClick'}">
+        <label><span class="address phone" th:text="#{save_order.buyOneClick.phone}"></span><br/>
+            <input type="phone" class="guest" name="phoneOneClick" required/>
+        </label>
+    </div>
+
+    <div th:if="${cart.items.size() > 0}">
+        <button type="submit" class="btn btn-warning" th:text="#{save_order.btn_commit}"></button>
     </div>
 
 </div>
+</form>
+
 
 </body>
 </html>

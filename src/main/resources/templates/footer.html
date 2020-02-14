@@ -12,6 +12,14 @@
 </head>
 
 <div th:fragment="footer">
+    <div>
+        <table>
+            <tr th:each="c: ${cookies}">
+                <td th:text="${c.getName()}"></td>
+                <td th:text="${c.getPath()}"></td>
+            </tr>
+        </table>
+    </div>
     <a th:href="@{/}">на Главную страницу</a>
 
 </div>

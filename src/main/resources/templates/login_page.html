@@ -49,14 +49,16 @@
                     </div>
                     <div style="margin-top: 10px" class="form-group">
                         <div class="col-sm-6 controls">
+                            <span hidden name="buyOneClick">0</span>
                             <button type="submit" class="btn btn-success" th:text="#{log.submit}"></button>
                         </div>
                     </div>
 
                 </form>
-                <form th:action="@{/oneclick/create}" method="POST" class="form-horizontal">
+                <form th:action="@{/orders/create}" method="POST" class="form-horizontal">
                     <div style="margin-top: 10px" class="form-group">
                         <div class="col-sm-6 controls">
+                            <span hidden name="buyOneClick">1</span>
                             <button type="submit" class="btn btn-success" th:text="#{log.buyOneClick}"></button>
                         </div>
                     </div>

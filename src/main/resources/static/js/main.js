@@ -23,7 +23,7 @@ $(document).ready(function () {
         $.ajax({
 
             type: "GET",
-            url: "/app/products/cart/countRequest",
+            url: "/app/products/cart/count",
             success: function (result) {
                 console.log(result);
                 $('#lblCounter').text('Товаров в корзине: ' + result);

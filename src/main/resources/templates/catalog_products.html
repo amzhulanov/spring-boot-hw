@@ -61,7 +61,8 @@
             <th scope="col" th:text="#{catalog_prod.description}"></th>
             <th scope="col" th:text="#{catalog_prod.price}"></th>
             <th sec:authorize="hasAnyRole('ADMIN')"  th:text="#{catalog_prod.edit}"></th>
-            <th/>
+            <th></th>
+
         </tr>
         </thead>
         <tbody>
@@ -79,10 +80,11 @@
             </td>
             <td th:text="${p.cost}"/>
             <td>
-
+                <a th:href="@{'/products/open/' + ${p.id}}" methods="GET" class="button"
+                   th:text="#{order_form.open}"></a>
+            </td>
+            <td>
                 <button class="button btnPost" th:name="'button'+${p.id}"  th:value="${p.id}" th:text="#{catalog_prod.addCart}"></button>
-
-
             </td>
             <td sec:authorize="hasAnyRole('ADMIN')">
                 <a th:href="@{'/products/edit/' + ${p.id}}" class="button" th:text="#{catalog_prod.editCart}"></a>
@@ -131,8 +133,16 @@
     
     <br>
 
+    <div>
+        <table>
+            <tr th:each="c: ${cookies}">
+                <td th:text="${c.getName()}"></td>
+                <td th:text="${c.getValue()}"></td>
+            </tr>
+        </table>
+    </div>
+    <div th:replace="footer :: footer"/>
 
-    <div th:replace="footer :: footer" />
 
 
 </div>

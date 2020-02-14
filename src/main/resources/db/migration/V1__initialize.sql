@@ -36,9 +36,9 @@ CREATE TABLE users_roles (
                              role_id               INT NOT NULL,
                              PRIMARY KEY (user_id, role_id),
                              FOREIGN KEY (user_id)
-                                 REFERENCES users (id),
+                                 REFERENCES users (id) ON DELETE CASCADE,
                              FOREIGN KEY (role_id)
-                                 REFERENCES roles (id)
+                                 REFERENCES roles (id) ON DELETE CASCADE
 );
 
 INSERT INTO roles (name)
@@ -60,6 +60,7 @@ create table reviews(review_id bigserial PRIMARY KEY,
                      product_id bigint,
                      user_id bigint,
                      description_fld varchar(255),
+                     rating_fld smallint,
                      constraint fk_user_id foreign key (user_id) references users (id),
                      constraint fk_product_id foreign key (product_id) references products (product_id));
 
@@ -94,7 +95,9 @@ INSERT INTO users (phone, password, first_name, last_name, email)
 VALUES
 ('111','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Admin','Admin','admin@gmail.com'),
 ('222','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Manager1','Manager1','manager1@gmail.com'),
-('333','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','n_user1','f_user1','user1@gmail.com');
+('333','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','n_user1','f_user1','user1@gmail.com'),
+('buyOneClick','1','buyOneClick','buyOneClick','buyOneClick@buyOneClick.buyOneClick')
+;
 
 INSERT INTO users_roles (user_id, role_id)
 VALUES
@@ -114,6 +117,7 @@ create table orders (order_id bigserial,
                     user_id bigint,
                     cost_fld numeric(8, 2),
                     address_id bigint,
+                    phone_number varchar(30) not null,
                     primary key(order_id),
                     constraint fk_user_id foreign key (user_id) references users (id),
                     constraint fk_address_id foreign key (address_id) references address);

@@ -27,6 +27,7 @@
                     <th th:text="#{product_description}"></th>
                     <th th:text="#{product_cost}"></th>
                     <th></th>
+                    <th>Кол-во отзывов</th>
 
                 </tr>
                 </thead>
@@ -38,9 +39,10 @@
                     <th th:text="${p.product.description}"></th>
                     <th th:text="${p.product.cost}"></th>
                         <td>
-                            <a th:href="@{'/products/reviews/' + ${p.product.id}}" methods="GET" class="button"
-                               th:text="#{product_review}"></a>
+                            <a th:href="@{'/products/open/' + ${p.product.id}}" methods="GET" class="button"
+                               th:text="#{order_form.open}"></a>
                         </td>
+                    <th th:text="${p.product.getReviews().size()}"></th>
                 </tr>
                 </tbody>
             </table>

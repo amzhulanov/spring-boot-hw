@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+
+    <title>Работа с товарами</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<form th:action="@{/products/edit}" th:object="${product}" method="POST">
+    <input th:field="*{id}" type="hidden" class="form-control">
+    <div class="form-row">
+        <div class="col form-group">
+            <label>Наименование</label>
+            <input th:field="*{title}" type="text" class="form-control" placeholder="Наименование">
+        </div>
+        <div class="col form-group">
+            <label>Цена</label>
+            <input th:field="*{cost}">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col form-group">
+            <label>Описание</label>
+            <input th:field="*{description}" type="text" class="form-control" placeholder="Описание">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col form-group">
+            <label>Категория</label>
+            <select th:field="*{category}">
+                <option th:each="c : ${categories}" th:text="${c.title}" th:value="${c.id}"/>
+            </select>
+        </div>
+
+    </div>
+    <div class="form-group">
+    <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+    </div>
+    <span>${product.getReviews().size()}</span>
+    <span>Отзывы о товаре</span>
+    <div class="form-group">
+        <div th:if="${product.getReviews().size() > 0}">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th th:text="#{feedback.id}"></th>
+                    <th th:text="#{feedback.description}"></th>
+                    <th th:text="#{feedback.user}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="review: ${product.getReviews()}">
+                    <td th:text="${review.getId()}"/>
+                    <td th:text="${review.description}"/>
+                    <td th:text="${review.user}"/>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${product.getReviews().size() == 0}">
+            <span>Ещё нет ни одного отзыва</span>
+        </div>
+    </div>
+</form>
+<div th:replace="footer :: footer" />
+</body>
+</html>

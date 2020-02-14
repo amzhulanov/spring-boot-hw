@@ -57,6 +57,11 @@ max-width: 1366px;
     padding-left: 10px;
 }
 
+.form_h1{
+    font-size: 14px;
+    color: #212121;
+}
+
 .button{
     padding-left: 10px;
     padding-right: 10px;
@@ -85,3 +90,12 @@ max-width: 1366px;
     color: red;
 }
 
+.title{
+    font-size: 16px;
+    color: #212121;
+}
+
+.review_description{
+    max-width: 100%;
+    max-height: 20%;
+}
