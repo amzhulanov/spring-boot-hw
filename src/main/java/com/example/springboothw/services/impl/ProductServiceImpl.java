@@ -1,6 +1,7 @@
 package com.example.springboothw.services.impl;
 
-import com.example.springboothw.dto.ProductDto;
+import com.example.springboothw.mappers.ProductMapper;
+import com.example.springboothw.soap.catalog.ProductDto;
 import com.example.springboothw.entities.Product;
 import com.example.springboothw.repositories.ProductRepository;
 import com.example.springboothw.services.ProductService;
@@ -20,10 +21,12 @@ import java.util.*;
 @Service
 public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
+    private ProductMapper productMapper;
 
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
+
     }
 
     @PostConstruct
@@ -105,10 +108,12 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll();
     }
 
-    @Override
-    public List<ProductDto> findAllBy() {
-        return productRepository.findAllBy();
+//    @Override
+//    public List<ProductDto> findAllBy() {
+//        return productRepository.findAllBy();
+//    }
+
+    public List<ProductDto> findAllBy(){
+        return ProductMapper.MAPPER.fromProductList(productRepository.findAllBy());
     }
-
-
 }
