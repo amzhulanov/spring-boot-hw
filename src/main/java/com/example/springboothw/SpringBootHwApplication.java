@@ -1,8 +1,6 @@
 package com.example.springboothw;
 
 import com.example.springboothw.rabbitmq.Receiver;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -15,8 +13,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 //ДЗ
 //При оформлении заказа в очередь отправляется сообщение об этом
 //есть консольное приложение, которое должно получать сообщение о новом заказе
@@ -27,7 +23,7 @@ public class SpringBootHwApplication {
     private static final String TOPIC_EXCHANGER_NAME_RECIEVER = "ExchangerReciever";
     private static final String QUEUE_NAME_SENDER = "OrderQueueSender";
     private static final String QUEUE_NAME_RECIEVER = "OrderQueueReciever";
-    private static final String ROUTING_KEY="confirmation";
+    private static final String ROUTING_KEY = "confirmation";
 
     //объявляется Exchanger
     @Bean
@@ -62,6 +58,7 @@ public class SpringBootHwApplication {
     Binding bindingTopicReciever(@Qualifier("queueTopicReciever") Queue queue, TopicExchange topicExchangeReciever) {
         return BindingBuilder.bind(queue).to(topicExchangeReciever).with(ROUTING_KEY);
     }
+
     @Bean
     SimpleMessageListenerContainer containerForTopic(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
@@ -70,11 +67,13 @@ public class SpringBootHwApplication {
         container.setMessageListener(listenerAdapter);
         return container;
     }
+
     @Bean
     MessageListenerAdapter listenerAdapter(Receiver receiver) {
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }
-    public static void main(String[] args)  {
+
+    public static void main(String[] args) {
         SpringApplication.run(SpringBootHwApplication.class, args);
 
     }
