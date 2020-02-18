@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -24,6 +25,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Integer updateAllOrder(String phone, User user);
 
     Order findByPhone(String phone);
+
+    @Transactional
+    @Modifying
+    @Query("update Order o SET o.status=:status where o.id=:id_order")
+    void updateStatusOrderById(Long id_order, String status);
 
 }
 

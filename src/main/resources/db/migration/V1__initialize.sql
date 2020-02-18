@@ -118,6 +118,7 @@ create table orders (order_id bigserial,
                     cost_fld numeric(8, 2),
                     address_id bigint,
                     phone_number varchar(30) not null,
+                    status varchar(10),
                     primary key(order_id),
                     constraint fk_user_id foreign key (user_id) references users (id),
                     constraint fk_address_id foreign key (address_id) references address);
