@@ -32,16 +32,20 @@ public class Order {
     @Column(name = "phone_number")
     private String phone;
 
+    @Column(name="status")
+    private String status;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="address_id")
     private Address address;
 
-    public Order(User user, Cart cart,Address address,String phone) {
+    public Order(User user, Cart cart,Address address,String phone,String status) {
         this.user = user;
         this.address=address;
         this.cost = cart.getCost();
         this.items = new ArrayList<>();
         this.phone=phone;
+        this.status=status;
         for (OrderItem i : cart.getItems()) {
             i.setOrder(this);
             this.items.add(i);
@@ -56,6 +60,7 @@ public class Order {
                 ", items=" + items +
                 ", cost=" + cost +
                 ", address=" + address +
+                ", status=" + status +
                 '}';
     }
 

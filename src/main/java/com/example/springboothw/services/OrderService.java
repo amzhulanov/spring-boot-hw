@@ -20,6 +20,9 @@ public interface OrderService {
 
     Integer checkOrders(User user);
 
+    void requestConfirmationFromClient(String id_order);
+    void orderConfirmed(Long id_order);
+
     //List<OrderItem> findAllOrderItemsByOrders(List<Order> orders);
     //OrderItem findAllItemByOrder (Order order);
 }

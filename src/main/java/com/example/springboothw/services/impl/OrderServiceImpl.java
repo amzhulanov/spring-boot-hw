@@ -3,6 +3,7 @@ package com.example.springboothw.services.impl;
 import com.example.springboothw.entities.Address;
 import com.example.springboothw.entities.Order;
 import com.example.springboothw.entities.User;
+import com.example.springboothw.rabbitmq.ExchangerSenderApp;
 import com.example.springboothw.repositories.OrderRepository;
 import com.example.springboothw.services.OrderService;
 import com.example.springboothw.services.UserService;
@@ -18,11 +19,13 @@ import java.util.*;
 public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     private UserService userService;
+    private ExchangerSenderApp exchangerSenderApp;
 
     @Autowired
-    public void setOrderRepository(OrderRepository orderRepository,UserService userService) {
+    public void setOrderRepository(OrderRepository orderRepository,UserService userService,ExchangerSenderApp exchangerSenderApp) {
         this.orderRepository = orderRepository;
         this.userService=userService;
+        this.exchangerSenderApp=exchangerSenderApp;
     }
 
     public Order save(Order order) {
@@ -30,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
-    public Order save(Principal principal, Map<String,String> params, Cart cart){
+    public Order save(Principal principal, Map<String,String> params, Cart cart) {
         User user;
         Address address = new Address();
         String phone;
@@ -47,8 +50,17 @@ public class OrderServiceImpl implements OrderService {
             user = userService.findByPhone(principal.getName());
             phone=params.get("phone");
         }
-        return orderRepository.save(new Order(user, cart,address,phone));
+
+
+
+        return orderRepository.save(new Order(user, cart,address,phone,"Registered"));
     }
+
+    public void requestConfirmationFromClient(String id_order){
+        exchangerSenderApp.sendMessage(id_order);
+    }
+
+
 
     public List<Order> findAllOrdersByUser(User user){
         return orderRepository.findAllOrdersByUser(user);
@@ -72,8 +84,11 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Integer checkOrders(User user) {
-
         return  orderRepository.updateAllOrder(user.getPhone(),user);
+    }
 
+    @Override
+    public void orderConfirmed(Long id_order) {
+        orderRepository.updateStatusOrderById(id_order,"Confirmed");
     }
 }

@@ -1,8 +1,6 @@
 package com.example.springboothw.controllers;
 
-import com.example.springboothw.entities.Address;
 import com.example.springboothw.entities.Order;
-import com.example.springboothw.entities.OrderItem;
 import com.example.springboothw.entities.User;
 import com.example.springboothw.services.OrderService;
 import com.example.springboothw.services.UserService;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.*;
 
@@ -65,6 +62,7 @@ public class OrderController {
     public String commitOrder(Principal principal, Model model, @RequestParam Map<String, String> params) {
         Order order=orderService.save(principal,params,cart);
         model.addAttribute("order_id_str", String.format("%05d", order.getId()));
+        orderService.requestConfirmationFromClient(order.getId().toString());
         return "order_confirmation";
     }
 
