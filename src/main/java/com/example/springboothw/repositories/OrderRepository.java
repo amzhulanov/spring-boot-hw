@@ -28,8 +28,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Transactional
     @Modifying
+    //named parameter
     @Query("update Order o SET o.status=:status where o.id=:id_order")
-    void updateStatusOrderById(Long id_order, String status);
+    //positional parameter
+    //@Query("update Order o SET o.status=?2 where o.id=?1")
+    void updateStatusOrderById( Long id_order,String status);
 
 }
 

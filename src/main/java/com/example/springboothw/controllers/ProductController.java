@@ -64,7 +64,10 @@ public class ProductController {
         Page<Product> page = productService.findAll(productFilter.getSpec(), pageRequest);
         List<Category> categories = categoryService.getAll();
 
-        List<Cookie> cookies= cookieController.readAllCookies(request);
+        List<Cookie> cookies;
+
+            cookies=cookieController.readAllCookies(request);
+
         model.addAttribute("filtersDef", productFilter.getFilterDefinition());
         model.addAttribute("page", page);
         model.addAttribute("categories", categories);
