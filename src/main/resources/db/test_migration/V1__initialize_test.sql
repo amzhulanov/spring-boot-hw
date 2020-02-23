@@ -120,6 +120,7 @@ create table orders (order_id bigserial,
                     phone_number varchar(30) not null,
                     status varchar(10),
                     primary key(order_id),
+
                     constraint fk_address_id foreign key (address_id) references address);
 
 

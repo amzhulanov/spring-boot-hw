@@ -53,6 +53,9 @@ public class User {
         this.roles = roles;
     }
 
-
+    public User(@NotNull @Size(min = 2, max = 30) String phone, String firstName) {
+        this.phone = phone;
+        this.firstName = firstName;
+    }
 }
 
