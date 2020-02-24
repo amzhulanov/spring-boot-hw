@@ -40,7 +40,7 @@ public class OrderController {
 
     @GetMapping("/open/{id}")
     public String openOrder(Model model,@PathVariable Long id){
-        Optional<Order> order= orderService.findById(id);
+        Order order= orderService.findById(id);
         model.addAttribute("order",order);
         return "order_form";
     }
@@ -62,6 +62,7 @@ public class OrderController {
     public String commitOrder(Principal principal, Model model, @RequestParam Map<String, String> params) {
         Order order=orderService.save(principal,params,cart);
         model.addAttribute("order_id_str", String.format("%05d", order.getId()));
+        model.addAttribute("order_id",order.getId());
         orderService.requestConfirmationFromClient(order.getId().toString());
         return "order_confirmation";
     }

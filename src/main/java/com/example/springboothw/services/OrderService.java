@@ -16,7 +16,7 @@ public interface OrderService {
     List<Order> findAllOrdersByUser(User user);
     BigDecimal costOrders(List<Order> orders);
 
-    Optional<Order> findById(Long id);
+    Order findById(Long id);
 
     Integer checkOrders(User user);
 
