@@ -33,15 +33,15 @@ public class RepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    @Test
-    public void setProductRepository(){
-        Product product=new Product("white","bread",new BigDecimal(10.5f));
-        Product out=entityManager.persist(product);
-        entityManager.flush();
-        List<Product> productsList = (List<Product>)productsRepository.findAll();
-        System.out.println(productsList);
-        Assert.assertEquals(21, productsList.size());
-    }
+//    @Test
+//    public void setProductRepository(){
+//        Product product=new Product("white","bread",new BigDecimal(10.5f));
+//        Product out=entityManager.persist(product);
+//        entityManager.flush();
+//        List<Product> productsList = (List<Product>)productsRepository.findAll();
+//        System.out.println(productsList);
+//        Assert.assertEquals(21, productsList.size());
+//    }
 /*
 тестирую правило валидации номера телефона
  */

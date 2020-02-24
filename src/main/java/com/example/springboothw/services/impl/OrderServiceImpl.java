@@ -74,8 +74,8 @@ public class OrderServiceImpl implements OrderService {
         return cost;
     }
 
-    public Optional<Order> findById(Long id) {
-        return orderRepository.findById(id);
+    public Order findById(Long id) {
+        return orderRepository.findById(id).get();
     }
 
     /**
