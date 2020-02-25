@@ -10,6 +10,4 @@ public interface ReviewService {
     Review findByUser(User user);
     Review findByUserAndProduct(User user, Product product);
     void save(Product product,String review_description, User user,Integer rating);
-
-  //  List<Review> findAllByProduct(Product product);
 }

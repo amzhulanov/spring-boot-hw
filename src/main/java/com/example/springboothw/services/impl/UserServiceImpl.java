@@ -1,12 +1,9 @@
 package com.example.springboothw.services.impl;
 
-
 import com.example.springboothw.entities.Role;
 import com.example.springboothw.entities.User;
-import com.example.springboothw.repositories.OrderRepository;
 import com.example.springboothw.repositories.RoleRepository;
 import com.example.springboothw.repositories.UserRepository;
-import com.example.springboothw.services.OrderService;
 import com.example.springboothw.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,16 +23,12 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
 
-
     @Autowired
     public void setUserRepository(UserRepository userRepository
-                                    , RoleRepository roleRepository
-                                  //,OrderService orderService) {
-                                  ){
+            , RoleRepository roleRepository
+    ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-
-        //this.orderService = orderService;
     }
 
     @Autowired
@@ -43,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByPhone(String phone) {
-           return userRepository.findOneByPhone(phone);
+        return userRepository.findOneByPhone(phone);
     }
 
     @Override
@@ -77,31 +70,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //public Boolean saveUser(User user) {
     public User saveUser(User user) {
-//        if (userRepository.findOneByEmail(user.getEmail()) != null
-//                || userRepository.findOneByPhone(user.getPhone()) != null) {
-//            return false;
-//        }
-//        User newUser = new User();
-//        newUser.setRoles(roleRepository.findOneByName("ROLE_CUSTOMER"));
-//        newUser.setPhone(user.getPhone());
-//        newUser.setFirstName(user.getFirstName());
-//        newUser.setLastName(user.getLastName());
-//        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(roleRepository.findOneByName("ROLE_CUSTOMER"));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-       // userRepository.save(newUser);
-        //orderRepository.updateAllUserByPhone(newUser.getPhone(),newUser);
-       // return true;
-        return //userRepository.save(newUser);
-                userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public User findOneByEmail(String email) {
         return userRepository.findOneByEmail(email);
+    }
+
+    @Override
+    public User findUserByUrl(String url) {
+        return userRepository.findUserByUrl(url);
+    }
+
+    @Override
+    public void updateStatusUserById(Long id, String status) {
+        userRepository.updateStatusUserById(id, status);
     }
 
 

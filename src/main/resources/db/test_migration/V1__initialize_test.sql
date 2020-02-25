@@ -22,6 +22,9 @@ CREATE TABLE users (
                        email                 VARCHAR(50),
                        first_name            VARCHAR(50),
                        last_name             VARCHAR(50),
+                       status                VARCHAR(50),
+                       url               VARCHAR(50),
+                       date_reg              date,
                        PRIMARY KEY (id)
 );
 
@@ -49,12 +52,12 @@ VALUES
 
 
 CREATE TABLE products (product_id bigserial PRIMARY KEY,
-                        category_id bigint,
-                        description_fld VARCHAR(512),
-                        title_fld VARCHAR(255),
-                        cost_fld numeric(8,2),
-                        constraint fk_cat_id foreign key (category_id) references categories (category_id)
-                        );
+                       category_id bigint,
+                       description_fld VARCHAR(512),
+                       title_fld VARCHAR(255),
+                       cost_fld numeric(8,2),
+                       constraint fk_cat_id foreign key (category_id) references categories (category_id)
+);
 
 create table reviews(review_id bigserial PRIMARY KEY,
                      product_id bigint,
@@ -91,12 +94,12 @@ INSERT INTO products (title_fld, category_id,description_fld, cost_fld) VALUES
 
 
 
-INSERT INTO users (phone, password, first_name, last_name, email)
+INSERT INTO users (phone, password, first_name, last_name, email,status,date_reg)
 VALUES
-('111','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Admin','Admin','admin@gmail.com'),
-('222','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Manager1','Manager1','manager1@gmail.com'),
-('333','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','n_user1','f_user1','user1@gmail.com'),
-('buyOneClick','1','buyOneClick','buyOneClick','buyOneClick@buyOneClick.buyOneClick')
+('111','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Admin','Admin','admin@gmail.com','Confirmed','01.01.2020'),
+('222','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Manager1','Manager1','manager1@gmail.com','Confirmed','01.01.2020'),
+('333','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','n_user1','f_user1','user1@gmail.com','Confirmed','01.01.2020'),
+('buyOneClick','1','buyOneClick','buyOneClick','buyOneClick@buyOneClick.buyOneClick','Confirmed','01.01.2020')
 ;
 
 INSERT INTO users_roles (user_id, role_id)
@@ -114,22 +117,21 @@ create table address (address_id            bigserial,
                       primary key(address_id));
 
 create table orders (order_id bigserial,
-                    user_id bigint,
-                    cost_fld numeric(8, 2),
-                    address_id bigint,
-                    phone_number varchar(30) not null,
-                    status varchar(10),
-                    primary key(order_id),
-
-                    constraint fk_address_id foreign key (address_id) references address);
+                     user_id bigint,
+                     cost_fld numeric(8, 2),
+                     address_id bigint,
+                     phone_number varchar(30) not null,
+                     status varchar(10),
+                     primary key(order_id),
+                     constraint fk_address_id foreign key (address_id) references address);
 
 
 create table orders_items (orders_items_id bigserial,
-                            order_id bigint,
-                            product_id bigint,
-                            quantity_fld int,
-                            cost_fld numeric(8, 2),
-                            primary key(orders_items_id),
-                            constraint fk_prod_id foreign key (product_id) references products (product_id),
-                            constraint fk_order_id foreign key (order_id) references orders (order_id));
+                           order_id bigint,
+                           product_id bigint,
+                           quantity_fld int,
+                           cost_fld numeric(8, 2),
+                           primary key(orders_items_id),
+                           constraint fk_prod_id foreign key (product_id) references products (product_id),
+                           constraint fk_order_id foreign key (order_id) references orders (order_id));
 

@@ -84,5 +84,4 @@ public class Product {
         this.reviews = reviews;
     }
 
-
 }

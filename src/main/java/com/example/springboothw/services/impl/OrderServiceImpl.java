@@ -22,10 +22,10 @@ public class OrderServiceImpl implements OrderService {
     private ExchangerSenderApp exchangerSenderApp;
 
     @Autowired
-    public void setOrderRepository(OrderRepository orderRepository,UserService userService,ExchangerSenderApp exchangerSenderApp) {
+    public void setOrderRepository(OrderRepository orderRepository, UserService userService, ExchangerSenderApp exchangerSenderApp) {
         this.orderRepository = orderRepository;
-        this.userService=userService;
-        this.exchangerSenderApp=exchangerSenderApp;
+        this.userService = userService;
+        this.exchangerSenderApp = exchangerSenderApp;
     }
 
     public Order save(Order order) {
@@ -33,43 +33,38 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
-    public Order save(Principal principal, Map<String,String> params, Cart cart) {
+    public Order save(Principal principal, Map<String, String> params, Cart cart) {
         User user;
         Address address = new Address();
         String phone;
-        if (principal==null){
+        if (principal == null) {
             address.setCity("buyOneClick");
             address.setStreet("buyOneClick");
             address.setHouse("buyOneClick");
-            user=userService.findByPhone("buyOneClick");
-            phone=params.get("phoneOneClick");
-        }else {
+            user = userService.findByPhone("buyOneClick");
+            phone = params.get("phoneOneClick");
+        } else {
             address.setCity(params.get("city"));
             address.setStreet(params.get("street"));
             address.setHouse(params.get("house"));
             user = userService.findByPhone(principal.getName());
-            phone=params.get("phone");
+            phone = params.get("phone");
         }
-
-
-
-        return orderRepository.save(new Order(user, cart,address,phone,"Registered"));
+        return orderRepository.save(new Order(user, cart, address, phone, "Registered"));
     }
 
-    public void requestConfirmationFromClient(String id_order){
+    public void requestConfirmationFromClient(String id_order) {
         exchangerSenderApp.sendMessage(id_order);
     }
 
-
-
-    public List<Order> findAllOrdersByUser(User user){
+    public List<Order> findAllOrdersByUser(User user) {
         return orderRepository.findAllOrdersByUser(user);
     }
 
-    public BigDecimal costOrders(List<Order> orders){
-        BigDecimal cost=new BigDecimal(0);
-        for (Order order: orders) {
-            cost=cost.add(order.getCost());
+    public BigDecimal costOrders(List<Order> orders) {
+        BigDecimal cost = new BigDecimal(0);
+        for (Order order : orders) {
+            cost = cost.add(order.getCost());
         }
         return cost;
     }
@@ -80,15 +75,14 @@ public class OrderServiceImpl implements OrderService {
 
     /**
      * Добавляю во все записи заказов user_id, если у них совпадает номер телефона и user_id==null
-     *
      */
     @Override
     public Integer checkOrders(User user) {
-        return  orderRepository.updateAllOrder(user.getPhone(),user);
+        return orderRepository.updateAllOrder(user.getPhone(), user);
     }
 
     @Override
     public void orderConfirmed(Long id_order) {
-        orderRepository.updateStatusOrderById(id_order,"Confirmed");
+        orderRepository.updateStatusOrderById(id_order, "Confirmed");
     }
 }

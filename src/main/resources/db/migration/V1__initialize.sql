@@ -22,6 +22,9 @@ CREATE TABLE users (
                        email                 VARCHAR(50),
                        first_name            VARCHAR(50),
                        last_name             VARCHAR(50),
+                       status                VARCHAR(50),
+                       url               VARCHAR(50),
+                       date_reg              date,
                        PRIMARY KEY (id)
 );
 
@@ -91,12 +94,12 @@ INSERT INTO products (title_fld, category_id,description_fld, cost_fld) VALUES
 
 
 
-INSERT INTO users (phone, password, first_name, last_name, email)
+INSERT INTO users (phone, password, first_name, last_name, email,status,date_reg)
 VALUES
-('111','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Admin','Admin','admin@gmail.com'),
-('222','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Manager1','Manager1','manager1@gmail.com'),
-('333','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','n_user1','f_user1','user1@gmail.com'),
-('buyOneClick','1','buyOneClick','buyOneClick','buyOneClick@buyOneClick.buyOneClick')
+('111','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Admin','Admin','admin@gmail.com','Confirmed','01.01.2020'),
+('222','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','Manager1','Manager1','manager1@gmail.com','Confirmed','01.01.2020'),
+('333','$2y$04$M6i.Dnslf6AumF9iCI9OfeFUWJJuU/EILpD3cDpGZXbYeWKDe2VMO','n_user1','f_user1','user1@gmail.com','Confirmed','01.01.2020'),
+('buyOneClick','1','buyOneClick','buyOneClick','buyOneClick@buyOneClick.buyOneClick','Confirmed','01.01.2020')
 ;
 
 INSERT INTO users_roles (user_id, role_id)

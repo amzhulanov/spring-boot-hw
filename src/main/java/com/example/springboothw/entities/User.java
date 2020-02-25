@@ -10,6 +10,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -38,6 +39,15 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "url")
+    private String url;
+
+//    @Column(name = "date_reg")
+//    private Date date_reg;
 
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

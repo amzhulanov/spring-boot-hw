@@ -2,6 +2,7 @@ package com.example.springboothw.controllers;
 
 import com.example.springboothw.entities.User;
 import com.example.springboothw.repositories.RoleRepository;
+import com.example.springboothw.services.MailService;
 import com.example.springboothw.services.OrderService;
 import com.example.springboothw.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.Calendar;
 import java.util.Map;
 
 
@@ -21,11 +23,14 @@ public class RegistrationController {
     private UserService userService;
     private RoleRepository roleRepository;
     private OrderService orderService;
+    private MailService mailService;
+    private Calendar calendar=null;
 
-    public RegistrationController(UserService userService, RoleRepository roleRepository,OrderService orderService) {
+    public RegistrationController(UserService userService, RoleRepository roleRepository,OrderService orderService,MailService mailService) {
         this.userService = userService;
         this.roleRepository = roleRepository;
         this.orderService=orderService;
+        this.mailService=mailService;
     }
 
     /**
@@ -73,6 +78,24 @@ public class RegistrationController {
         userService.saveUser(user);
         orderService.checkOrders(user);
 
+        model.addAttribute("reg_confirmation","На указанный электронный адрес отправлено письмо с инструкциями для завершения регистрации!");
+        mailService.sendRegConfirmation(user);
+        user.setStatus("Not confirmed");
+//        user.setDate_reg(calendar.getTime());
         return "user_registration_confirmation";
     }
+
+    // http://localhost:8189/app/registration/confirmation/url
+    @GetMapping("/confirmation/{url}")
+    public String registrationConfirmation(@PathVariable String url){
+        User user;//=new User();
+        user = userService.findUserByUrl(url);
+        if (user==null){
+            return "user_registration_confirmation_failed";
+        }
+        userService.updateStatusUserById(user.getId(),"Confirmed");
+//        user.setDate_reg(calendar.getTime());
+        return "user_registration_confirmation_success";
+    }
+
 }
