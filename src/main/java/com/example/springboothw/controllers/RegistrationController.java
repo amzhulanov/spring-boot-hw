@@ -88,7 +88,7 @@ public class RegistrationController {
     // http://localhost:8189/app/registration/confirmation/url
     @GetMapping("/confirmation/{url}")
     public String registrationConfirmation(@PathVariable String url){
-        User user;//=new User();
+        User user;
         user = userService.findUserByUrl(url);
         if (user==null){
             return "user_registration_confirmation_failed";
